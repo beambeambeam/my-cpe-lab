@@ -13,6 +13,6 @@ int main()
   printf("exponent %%e = %e\n", test);
   printf("significant %%g = %g\n", test);
   printf("character %%c = %c\n", test);
-  printf("End program");
+   printf("End program");
   return 0;
 }
