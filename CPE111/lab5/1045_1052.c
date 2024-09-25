@@ -101,18 +101,34 @@ void search_sort(int a[11], int arr[11], int b[11], int n, int target) {
 }
 
 int main() {
-  int arr[11] = {3, 5, 7, 9, 29, 33, 17, 41, 26, 2, 8};
+  // mod 0
+  int arr[11] = {11, 8, 1, 9, 21, 5, 7, 32, 6, 20, 10};
   int a[11], b[11];
   memcpy(&a, &arr, sizeof arr);
   memcpy(&b, &arr, sizeof arr);
 
-  printf("mod 1 : \n");
+  printf("mod 0 : \n");
   search_sort(a, arr, b, 11, 5);
 
   int gcd_results[] = {gcd(25, 75), gcd(39, 15), gcd(17, 50)};
 
   printf("gcd : ");
   printArray(gcd_results, sizeof(gcd_results) / sizeof(gcd_results[0]));
+
+  printf("\n");
+
+  // mod 1
+  int arr2[11] = {3, 5, 7, 9, 29, 33, 17, 41, 26, 2, 8};
+  int a2[11], b2[11];
+  memcpy(&a2, &arr2, sizeof arr2);
+  memcpy(&b2, &arr2, sizeof arr2);
+
+  printf("mod 1 : \n");
+  search_sort(a2, arr2, b2, 11, 7);
+
+  int gcd_results2[] = {gcd(12, 36), gcd(51, 27), gcd(19, 100)};
+  printf("gcd : ");
+  printArray(gcd_results2, sizeof(gcd_results2) / sizeof(gcd_results2[0]));
 
   return 0;
 }
