@@ -25,13 +25,15 @@ int main(int argc, char const *argv[]) {
   }
 
   printf("Name list: ");
+  char first_name[MAX_NAME + 1] = "Z";
   for (int i = 0; i < count; i++) {
-    if (i == count - 1) {
-      printf("%s", names[i]);
-    } else {
-      printf("%s ", names[i]);
+    if (strcmp(names[i], first_name) < 0) {
+      strcpy(first_name, names[i]);
     }
+    printf("%s ", names[i]);
   }
+
+  printf("\nThe first order name sorted alphabetically: %s", first_name);
 
   return 0;
 }
