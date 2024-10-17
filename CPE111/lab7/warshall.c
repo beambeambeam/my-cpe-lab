@@ -29,7 +29,7 @@ void printMatrix(int target[V][V]) {
 }
 
 int main(int argc, char const *argv[]) {
-  int target[V][V] = {{0, 1, INF, 1, INF},
+  int target[V][V] = {{INF, 1, INF, 1, INF},
                       {INF, 0, 1, INF, 1},
                       {INF, 1, 0, INF, 1},
                       {1, INF, 1, 0, INF},
