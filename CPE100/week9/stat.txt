@@ -1,0 +1,3 @@
+Average score is 6
+Minimum score is 4
+Maximum score is 8
