@@ -8,6 +8,11 @@ typedef struct {
   size_t capacity;
 } Array;
 
+typedef struct {
+  char data;
+  struct Node *next;
+} Node;
+
 int main(int argc, char const *argv[]) {
   Array Numbers = {};
   Numbers.count = 0;
@@ -23,9 +28,7 @@ int main(int argc, char const *argv[]) {
     Numbers.count++;
   }
 
-  REP(i, 0, Numbers.count - 1) {
-    printf("%d ", Numbers.items[i]);
-  }
+  REP(i, 0, Numbers.count - 1) { printf("%d ", Numbers.items[i]); }
   printf("\n");
 
   free(Numbers.items);
