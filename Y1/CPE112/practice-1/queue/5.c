@@ -92,7 +92,7 @@ int main(int argc, char const *argv[]) {
   Queue *q3 = createQueue();
 
   char word[100];
-  fgets(word, sizeof(word), stdin);
+  scanf("%[^\n]%*c", word);
 
   for (int i = 0; word[i] != '\0'; i++) {
     if ((word[i] >= 'a' && word[i] <= 'z') ||
