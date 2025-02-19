@@ -4,12 +4,14 @@
 
 typedef struct Node {
   int data;
+  int priority;
   struct Node *next;
 } Node;
 
-Node *createNode(int new_data) {
+Node *createNode(int new_data, int priority) {
   Node *new_node = (Node *)malloc(sizeof(Node));
   new_node->data = new_data;
+  new_node->priority = priority;
   new_node->next = NULL;
   return new_node;
 }
@@ -26,28 +28,25 @@ Queue *createQueue() {
   return q;
 }
 
-int isEmpty(Queue *q) {
-  if (q->front == NULL && q->rear == NULL) {
-    return 1;
+int isEmpty(Queue *q) { return q->front == NULL; }
+
+void enqueue(Queue *q, int data, int priority) {
+  Node *newNode = createNode(data, priority);
+  if (isEmpty(q) || q->front->priority > priority) {
+    newNode->next = q->front;
+    q->front = newNode;
+  } else {
+    Node *temp = q->front;
+    while (temp->next != NULL && temp->next->priority <= priority) {
+      temp = temp->next;
+    }
+    newNode->next = temp->next;
+    temp->next = newNode;
   }
-
-  return 0;
-}
-
-void enqueue(Queue *q, int data) {
-  Node *newNode = createNode(data);
-  if (q->rear == NULL) {
-    q->front = q->rear = newNode;
-    q->size++;
-    return;
+  if (newNode->next == NULL) {
+    q->rear = newNode;
   }
-
-  q->rear->next = newNode;
-  q->rear = newNode;
-
   q->size++;
-
-  return;
 }
 
 void dequeue(Queue *q) {
@@ -64,12 +63,9 @@ void dequeue(Queue *q) {
 
   free(temp);
   q->size--;
-
-  return;
 }
 
 int getFront(Queue *q) {
-
   if (isEmpty(q)) {
     printf("Queue is empty\n");
     return INT_MIN;
@@ -78,7 +74,6 @@ int getFront(Queue *q) {
 }
 
 int getRear(Queue *q) {
-
   if (isEmpty(q)) {
     printf("Queue is empty\n");
     return INT_MIN;
@@ -98,9 +93,10 @@ void traverse(Node *start) {
 int main(int argc, char const *argv[]) {
   Queue *q = createQueue();
 
-  enqueue(q, 10);
-  enqueue(q, 20);
-  enqueue(q, 30);
+  enqueue(q, 10, 2);
+  enqueue(q, 20, 1);
+  enqueue(q, 30, 3);
+  enqueue(q, 40, 1);
 
   traverse(q->front);
 

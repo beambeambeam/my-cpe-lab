@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -37,6 +38,13 @@ void pop(node **head) {
 
 int isEmpty(node **stack) { return *stack == NULL; }
 
+char peak(node **stack) {
+  if (!isEmpty(stack))
+    return (*stack)->data;
+  else
+    return -1;
+}
+
 void printStack(node **stack) {
   if (isEmpty(stack)) {
     printf("Empty Stack");
@@ -54,37 +62,24 @@ void printStack(node **stack) {
   printf("\n");
 }
 
-int peak(node **stack) {
-  if (!isEmpty(stack))
-    return (*stack)->data;
-  else
-    return -1;
-}
-
 int main(int argc, char const *argv[]) {
   node *stack = NULL;
 
-  // Push some elements onto the stack
   push(&stack, 10);
   push(&stack, 20);
   push(&stack, 30);
 
-  // Print the stack
   printf("Stack after pushes: ");
   printStack(&stack);
 
-  // Pop an element from the stack
   pop(&stack);
 
-  // Print the stack
   printf("Stack after pop: ");
   printStack(&stack);
 
-  // Peek at the top element
   int top = peak(&stack);
   printf("Top element: %d\n", top);
 
-  // Check if the stack is empty
   if (isEmpty(&stack)) {
     printf("Stack is empty\n");
   } else {
