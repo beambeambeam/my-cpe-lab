@@ -100,45 +100,43 @@ void printQueue(Queue *q) {
 }
 
 int main(int argc, char const *argv[]) {
-  int n;
-  scanf("%d", &n);
+  int r, t, n;
+  scanf("%d %d %d", &r, &t, &n);
 
-  Queue *qs = createQueue();
-  Queue *qp = createQueue();
+  Queue *q = createQueue();
+  Queue *in = createQueue();
 
   int x;
-  for (int i = 0; i < n; i++) {
+  while (1) {
     scanf("%d", &x);
-    enqueue(qs, x);
+    if (x == -1)
+      break;
+
+    enqueue(q, x);
   }
 
-  for (int i = 0; i < n; i++) {
-    scanf("%d", &x);
-    enqueue(qp, x);
-  }
+  int process = 0, start_size = q->size;
 
-  while (!isEmpty(qs)) {
-    int front_s = getFront(qs);
-    int front_p = getFront(qp);
-
-    if (front_s != front_p) {
-      dequeue(qs);
-      enqueue(qs, front_s);
-
-      continue;
-    } else {
-      dequeue(qs);
-      dequeue(qp);
-    }
-
-    if (qp->size == 0 && qs->size == 0) {
+  while (1) {
+    n = n - t;
+    if (n <= 0) {
       break;
     }
+    int ram = r;
 
-    // can't find final break case
+    while (!isEmpty(q)) {
+      int front = getFront(q);
+      if (ram < front) {
+        break;
+      }
+
+      ram = ram - front;
+
+      dequeue(q);
+    }
   }
 
-  printf("%d", qs->size);
+  printf("%d", start_size - q->size);
 
   return 0;
 }
