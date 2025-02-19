@@ -30,7 +30,7 @@ void append(Numbers *xs, int x) {
 
 void remove_at(Numbers *xs, size_t index) {
   if (index >= xs->count) {
-    return; // Index out of bounds
+    return;
   }
   for (size_t i = index; i < xs->count - 1; ++i) {
     xs->items[i] = xs->items[i + 1];
