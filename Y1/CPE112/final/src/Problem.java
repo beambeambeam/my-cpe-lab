@@ -182,4 +182,34 @@ public class Problem {
 
     input.close();
   }
+
+  public static void SurvivalEp2() {
+    Scanner input = new Scanner(System.in);
+
+    Algorithm alg = new MyAlgorithm();
+
+    int n = input.nextInt();
+    int m = input.nextInt();
+
+    GraphL graph = new GraphL(false, n, m);
+
+    for (int i = 0; i < m; i++) {
+      int u = input.nextInt();
+      int v = input.nextInt();
+
+      graph.addEdge(u, v, 1);
+    }
+
+    int s = input.nextInt();
+    int v = input.nextInt();
+    int z = input.nextInt();
+
+    if (alg.dijkstra(graph, s, v) > alg.dijkstra(graph, v, z)) {
+      System.out.println("TOO LATE");
+    } else {
+      System.out.println("SAFE");
+    }
+
+    input.close();
+  }
 }
