@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -145,5 +146,40 @@ public class Problem {
     for (Integer x : result) {
       System.out.println(x);
     }
+  }
+
+  public static void SurvivalEp1() {
+    Scanner input = new Scanner(System.in);
+
+    Algorithm alg = new MyAlgorithm();
+
+    int n = input.nextInt();
+
+    GraphM graph = new GraphM(n + 1, false);
+
+    for (int i = 0; i < n; i++) {
+      int src = input.nextInt();
+      int dst = input.nextInt();
+      int dis = input.nextInt();
+
+      graph.addEdge(src, dst, dis);
+    }
+
+    List<List<Integer>> result = new ArrayList<>();
+
+    for (int i = 0; i < n; i++) {
+      List<Integer> sortedList = alg.dfs(graph, i);
+      Collections.sort(sortedList);
+      result.add(sortedList);
+    }
+
+    System.out.println("");
+
+    for (int i = 0; i < result.size(); i++) {
+      System.out.println("From Cave " + i + ", reachable caves:");
+      System.out.println(result.get(i));
+    }
+
+    input.close();
   }
 }
