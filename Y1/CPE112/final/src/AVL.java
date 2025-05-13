@@ -5,18 +5,18 @@ public class AVL extends BinTree {
 
   @Override
   public void insertNode(int node) {
-    root = insertNodeRec(root, node);
+    root = insertNode(root, node);
   }
 
-  private BinNode insertNodeRec(BinNode current, int node) {
+  private BinNode insertNode(BinNode current, int node) {
     if (current == null) {
       return new BinNode(node);
     }
 
     if (node < current.node) {
-      current.leftChild = insertNodeRec(current.leftChild, node);
+      current.leftChild = insertNode(current.leftChild, node);
     } else if (node > current.node) {
-      current.rightChild = insertNodeRec(current.rightChild, node);
+      current.rightChild = insertNode(current.rightChild, node);
     } else {
       return current;
     }
