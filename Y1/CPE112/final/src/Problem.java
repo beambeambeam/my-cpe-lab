@@ -54,12 +54,12 @@ public class Problem {
 
     BinNode current = tree.root;
     while (current != null) {
-      int balanceFactor = getBalanceFactor(current);
-      if (balanceFactor == balance) {
-        System.out.println("Node with value " + current.node + " has balance factor " + balanceFactor);
+      if (current.node == balance) {
+        int balanceFactor = getBalanceFactor(current);
+        System.out.println(balanceFactor);
         break;
       }
-      if (balanceFactor > balance) {
+      if (current.node > balance) {
         current = current.leftChild;
       } else {
         current = current.rightChild;
