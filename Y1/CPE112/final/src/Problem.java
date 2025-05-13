@@ -4,6 +4,84 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Problem {
+  public static void VindowsDuplicateMode() {
+    Scanner input = new Scanner(System.in);
+
+    BST tree = new BST();
+
+    while (true) {
+      int x = input.nextInt();
+      if (x == 0) {
+        break;
+      }
+      tree.insertNode(x);
+    }
+
+    BST duplicateTree = new BST();
+    duplicateTree.root = duplicateTree(tree.root);
+
+    input.close();
+  }
+
+  private static BinNode duplicateTree(BinNode node) {
+    if (node == null) {
+      return null;
+    }
+    BinNode newNode = new BinNode(node.node);
+    newNode.leftChild = duplicateTree(node.leftChild);
+    newNode.rightChild = duplicateTree(node.rightChild);
+    return newNode;
+  }
+
+  public static void VindowsBalanceMode() {
+    Scanner input = new Scanner(System.in);
+
+    BST tree = new BST();
+
+    while (true) {
+      int x = input.nextInt();
+      if (x == 0) {
+        break;
+      }
+      tree.insertNode(x);
+    }
+
+    // get balance point
+
+    int balance = input.nextInt();
+
+    // find node of balance point
+
+    BinNode current = tree.root;
+    while (current != null) {
+      int balanceFactor = getBalanceFactor(current);
+      if (balanceFactor == balance) {
+        System.out.println("Node with value " + current.node + " has balance factor " + balanceFactor);
+        break;
+      }
+      if (balanceFactor > balance) {
+        current = current.leftChild;
+      } else {
+        current = current.rightChild;
+      }
+    }
+
+    input.close();
+  }
+
+  private static int height(BinNode node) {
+    if (node == null) {
+      return 0;
+    }
+    return Math.max(height(node.leftChild), height(node.rightChild)) + 1;
+  }
+
+  private static int getBalanceFactor(BinNode node) {
+    if (node == null) {
+      return 0;
+    }
+    return height(node.leftChild) - height(node.rightChild);
+  }
 
   // Graph & Tree
 
