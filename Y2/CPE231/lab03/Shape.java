@@ -7,12 +7,6 @@ public abstract class Shape {
   private Color borderColor;
   private double borderThickness;
 
-  public Shape() {
-    this.color = null;
-    this.borderColor = Color.BLACK;
-    this.borderThickness = 1.0;
-  }
-
   public Shape(Color color) {
     if (color == Color.BLACK) {
       throw new IllegalArgumentException("BLACK color is not allowed.");
