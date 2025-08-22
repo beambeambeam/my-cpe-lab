@@ -16,12 +16,6 @@ public abstract class Shape {
     this.borderThickness = 1.0;
   }
 
-  public void shape(Color color2) {
-    this.color = color2;
-    this.borderColor = Color.BLACK;
-    this.borderThickness = 1.0;
-  }
-
   public Color getColor() {
     return color;
   }
