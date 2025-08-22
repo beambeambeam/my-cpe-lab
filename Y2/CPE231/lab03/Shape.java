@@ -8,15 +8,8 @@ public abstract class Shape {
   private double borderThickness;
 
   public Shape(Color color) {
-    boolean found = false;
-    for (Color c : Color.values()) {
-      if (c == color) {
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      throw new IllegalArgumentException("Color is not defined in the enum.");
+    if (color == null) {
+      throw new NullPointerException("color must not be null");
     }
     if (color == Color.BLACK) {
       throw new IllegalArgumentException("BLACK color is not allowed.");
@@ -43,7 +36,7 @@ public abstract class Shape {
   public abstract double perimeter();
 
   public final void printColorUsage() {
-    int red = 0, green = 0, blue = 0, black = 0;
+    double red = 0.0, green = 0.0, blue = 0.0, black = 0.0;
     Color c = this.getColor();
     if (c != null) {
       switch (c) {
@@ -61,7 +54,7 @@ public abstract class Shape {
       }
     }
 
-    black = (int) ((int) getBorderThickness() * perimeter());
+    black = getBorderThickness() * perimeter();
 
     System.out.println("red: " + red);
     System.out.println("green: " + green);
