@@ -8,6 +8,16 @@ public abstract class Shape {
   private double borderThickness;
 
   public Shape(Color color) {
+    boolean found = false;
+    for (Color c : Color.values()) {
+      if (c == color) {
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      throw new IllegalArgumentException("Color is not defined in the enum.");
+    }
     if (color == Color.BLACK) {
       throw new IllegalArgumentException("BLACK color is not allowed.");
     }
