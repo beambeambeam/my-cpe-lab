@@ -4,8 +4,20 @@ public class Rectangle extends Shape {
 
   public Rectangle(String color, Point p1, Point p2) {
     super(Color.valueOf(color.toUpperCase()));
-    this.p1 = p1;
-    this.p2 = p2;
+    initPoints(p1, p2);
+  }
+
+  public Rectangle(Color color, Point p1, Point p2) {
+    super(color);
+    initPoints(p1, p2);
+  }
+
+  private void initPoints(Point a, Point b) {
+    if (a == null || b == null) {
+      throw new NullPointerException("points must not be null");
+    }
+    this.p1 = a;
+    this.p2 = b;
   }
 
   public Point getP1() {
