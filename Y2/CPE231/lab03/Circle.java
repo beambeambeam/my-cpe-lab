@@ -1,5 +1,5 @@
 public class Circle extends Shape {
-  private double r; // radius
+  private double r;
 
   public Circle(String color, double r) {
     super(Color.valueOf(color.toUpperCase()));
