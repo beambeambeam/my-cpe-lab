@@ -8,13 +8,15 @@ public abstract class Shape {
   private double borderThickness;
 
   public Shape() {
-    // default
     this.color = null;
     this.borderColor = Color.BLACK;
     this.borderThickness = 1.0;
   }
 
   public Shape(Color color) {
+    if (color == Color.BLACK) {
+      throw new IllegalArgumentException("BLACK color is not allowed.");
+    }
     this.color = color;
     this.borderColor = Color.BLACK;
     this.borderThickness = 1.0;
@@ -42,33 +44,26 @@ public abstract class Shape {
 
   public abstract double perimeter();
 
-  public static final void printColorUsage(Shape[] shapes) {
+  public final void printColorUsage() {
     int red = 0, green = 0, blue = 0, black = 0;
-    if (shapes != null) {
-      for (Shape s : shapes) {
-        if (s == null)
-          continue;
-        Color c = s.getColor();
-        if (c == null)
-          continue;
-        switch (c) {
-          case RED:
-            red++;
-            break;
-          case GREEN:
-            green++;
-            break;
-          case BLUE:
-            blue++;
-            break;
-          case BLACK:
-            black++;
-            break;
-          default:
-            break;
-        }
+    Color c = this.getColor();
+    if (c != null) {
+      switch (c) {
+        case RED:
+          red += area();
+          break;
+        case GREEN:
+          green += area();
+          break;
+        case BLUE:
+          blue += area();
+          break;
+        default:
+          break;
       }
     }
+
+    black = (int) ((int) getBorderThickness() * perimeter());
 
     System.out.println("red: " + red);
     System.out.println("green: " + green);
