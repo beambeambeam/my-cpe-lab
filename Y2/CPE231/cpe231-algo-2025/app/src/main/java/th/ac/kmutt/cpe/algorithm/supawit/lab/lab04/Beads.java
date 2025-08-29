@@ -1,5 +1,7 @@
 package th.ac.kmutt.cpe.algorithm.supawit.lab.lab04;
 
+import java.util.Scanner;
+
 public class Beads {
   public static int countValidSubstrings(String beads, char A, char B, int p) {
     int count = 0;
@@ -23,6 +25,21 @@ public class Beads {
     }
 
     return count;
+  }
+
+  public static void solution() {
+    Scanner scanner = new Scanner(System.in);
+
+    String beads = scanner.nextLine().trim();
+    String[] chars = scanner.nextLine().trim().split(" ");
+    char A = chars[0].charAt(0);
+    char B = chars[1].charAt(0);
+    int p = Integer.parseInt(scanner.nextLine().trim());
+
+    int result = countValidSubstrings(beads, A, B, p);
+    System.out.println(result);
+
+    scanner.close();
   }
 
   public static void runTests() {
