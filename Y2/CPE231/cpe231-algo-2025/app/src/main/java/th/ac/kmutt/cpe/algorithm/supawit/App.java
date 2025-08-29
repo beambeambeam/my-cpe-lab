@@ -3,27 +3,10 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
-import java.util.ArrayList;
-
-import th.ac.kmutt.cpe.algorithm.supawit.searching.LinearSearch;
-import th.ac.kmutt.cpe.algorithm.supawit.searching.SearchContext;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab04.Beads;
 
 public class App {
   public static void main(String[] args) {
-    System.out.println("hello world!");
-
-    // demo: use LinearSearch via SearchContext
-    ArrayList<Integer> numbers = new ArrayList<>();
-    numbers.add(10);
-    numbers.add(20);
-    numbers.add(30);
-    numbers.add(40);
-
-    SearchContext<Integer> ctx = new SearchContext<Integer>(new LinearSearch<Integer>());
-    int idx = ctx.executeSearch(numbers, 30);
-    System.out.println("Index of 30: " + idx); // expected 2
-
-    int notFound = ctx.executeSearch(numbers, 99);
-    System.out.println("Index of 99: " + notFound); // expected -1
+    Beads.runTests();
   }
 }
