@@ -239,11 +239,20 @@ public class Solution {
     }
 
     ArrayList<String> destinations = new ArrayList<>();
-    if (deliveryType.equalsIgnoreCase("World")) {
+    Delivery.FeeSheet feeSheet = null;
+
+    for (Delivery.FeeSheet sheet : delivery.fees) {
+      if (sheet.label.equalsIgnoreCase(deliveryType)) {
+        feeSheet = sheet;
+        break;
+      }
+    }
+
+    if (feeSheet != null && feeSheet.getHeaders() != null && feeSheet.getHeaders().length > 3) {
       System.out.print("Enter Destination Zone (e.g., Zone 1, Zone 2, ...): ");
       String zone = scanner.nextLine().trim();
       destinations.add(zone);
-    } else if (deliveryType.equalsIgnoreCase("Domestic")) {
+    } else {
       destinations.add("Domestic");
     }
 
