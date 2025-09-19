@@ -102,18 +102,7 @@ public class Solution {
 
       int cost = 0;
 
-      if (deliveryType.equalsIgnoreCase("Domestic")) {
-        for (int i = 0; i < feeSheet.size(); i++) {
-          FeeObject fee = feeSheet.get(i);
-          int fromWeight = Integer.parseInt(fee.getField("From"));
-          int toWeight = Integer.parseInt(fee.getField("To"));
-
-          if (weight >= fromWeight && weight <= toWeight) {
-            cost = Integer.parseInt(fee.getField("Cost"));
-            break;
-          }
-        }
-      } else if (deliveryType.equalsIgnoreCase("World")) {
+      if (feeSheet != null && feeSheet.getHeaders() != null && feeSheet.getHeaders().length > 3) {
         String[] zones = destinations.get(0).split(",");
         int totalCost = 0;
         for (String zone : zones) {
@@ -134,10 +123,21 @@ public class Solution {
             }
           }
         }
+
         cost = totalCost;
+      } else {
+        for (int i = 0; i < feeSheet.size(); i++) {
+          FeeObject fee = feeSheet.get(i);
+          int fromWeight = Integer.parseInt(fee.getField("From"));
+          int toWeight = Integer.parseInt(fee.getField("To"));
+
+          if (weight >= fromWeight && weight <= toWeight) {
+            cost = Integer.parseInt(fee.getField("Cost"));
+            break;
+          }
+        }
       }
 
-      System.out.println("Shipping cost: " + cost + " baht");
       return cost;
     }
 
@@ -252,13 +252,12 @@ public class Solution {
       System.out.print("Enter Destination Zone (e.g., Zone 1, Zone 2, ...): ");
       String zone = scanner.nextLine().trim();
       destinations.add(zone);
-    } else {
-      destinations.add("Domestic");
     }
 
     scanner.close();
 
-    delivery.calculateCost(deliveryType, weight, destinations);
+    int cost = delivery.calculateCost(deliveryType, weight, destinations);
+    System.out.println("Shipping cost: " + cost + " baht");
   }
 
   public static void main(String[] args) {
