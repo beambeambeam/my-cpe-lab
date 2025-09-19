@@ -3,10 +3,7 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab04.Beads;
-
 public class App {
   public static void main(String[] args) {
-    Beads.runTests();
   }
 }
