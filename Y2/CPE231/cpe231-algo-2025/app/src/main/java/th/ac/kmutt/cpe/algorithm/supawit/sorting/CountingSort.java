@@ -5,7 +5,10 @@ import java.util.ArrayList;
 public class CountingSort<T extends Comparable<T>> implements SortingStrategy<T> {
 
   public ArrayList<T> sorting(ArrayList<T> list) {
-    if (list == null || list.size() <= 1) {
+    if (list == null) {
+      return new ArrayList<>();
+    }
+    if (list.size() <= 1) {
       return new ArrayList<>(list);
     }
 
@@ -44,7 +47,14 @@ public class CountingSort<T extends Comparable<T>> implements SortingStrategy<T>
       return new ArrayList<>(list);
     }
 
-    int range = max - min + 1;
+    // Check for potential overflow in range calculation
+    long longRange = (long) max - (long) min + 1;
+    if (longRange > Integer.MAX_VALUE || longRange <= 0) {
+      // Range too large for counting sort, fall back to a different approach
+      throw new UnsupportedOperationException("Range too large for counting sort: " + longRange);
+    }
+
+    int range = (int) longRange;
     int[] count = new int[range];
 
     for (Integer num : intList) {
