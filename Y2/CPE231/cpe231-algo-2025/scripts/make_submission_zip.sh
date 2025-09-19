@@ -68,7 +68,7 @@ OUTDIR_ABS="$OUTDIR"
 mkdir -p "$OUTDIR_ABS"
 TARGET="$OUTDIR_ABS/${BASENAME}.zip"
 
-# Exclude common build/artifact folders and VCS
+# Exclude common build/artifact folders, VCS, and test files
 EXCLUDES=(
   "*.class"
   "build/*"
@@ -81,6 +81,10 @@ EXCLUDES=(
   "__pycache__/*"
   "*.DS_Store"
   "*.iml"
+  "src/test/*"
+  "*/test/*"
+  "*Test.java"
+  "*Test.kt"
 )
 
 # Build the -x args for zip
