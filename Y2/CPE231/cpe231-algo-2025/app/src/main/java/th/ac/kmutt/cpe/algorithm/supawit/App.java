@@ -3,7 +3,10 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab05.Solution;
+
 public class App {
   public static void main(String[] args) {
+    Solution.main(args);
   }
 }
