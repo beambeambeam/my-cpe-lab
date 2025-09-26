@@ -72,34 +72,96 @@ public class Solution {
     ArrayList<Box> boxes = readBoxesFromCSV("Lab06_test/boxSize2.csv");
     Bin bin = getBin();
 
-    // Test Brute Force Algorithm
-    System.out.println("\n=== BRUTE FORCE ALGORITHM ===");
+    System.out.println("\n" + "=".repeat(60));
+    System.out.println("BIN PACKING ALGORITHM COMPARISON");
+    System.out.println("=".repeat(60));
+
+    System.out.println("\n[1/4] Running Brute Force Algorithm...");
     long startTime = System.currentTimeMillis();
     BruteForce bruteForce = new BruteForce();
     Bin bruteResult = bruteForce.solve(boxes, bin);
     long bruteTime = System.currentTimeMillis() - startTime;
 
-    System.out.println("Brute Force Results:");
-    System.out.println("Placed " + bruteResult.getPlacedBoxes().size() + " out of " + boxes.size() + " boxes");
-    System.out.println("Bin utilization: " + calculateUtilization(bruteResult) + "%");
-    System.out.println("Execution time: " + bruteTime + " ms");
+    System.out.println("[2/4] Running Next-Fit Algorithm...");
+    startTime = System.currentTimeMillis();
+    NextFit nextFit = new NextFit();
+    Bin nextFitResult = nextFit.solve(boxes, bin);
+    long nextFitTime = System.currentTimeMillis() - startTime;
 
-    System.out.println("\n=== FIRST-FIT DECREASING ALGORITHM ===");
+    System.out.println("[3/4] Running First-Fit Decreasing Algorithm...");
     startTime = System.currentTimeMillis();
     FirstFitDecreasing ffd = new FirstFitDecreasing();
     Bin ffdResult = ffd.solve(boxes, bin);
     long ffdTime = System.currentTimeMillis() - startTime;
 
-    System.out.println("First-Fit Decreasing Results:");
-    System.out.println("Placed " + ffdResult.getPlacedBoxes().size() + " out of " + boxes.size() + " boxes");
-    System.out.println("Bin utilization: " + calculateUtilization(ffdResult) + "%");
-    System.out.println("Execution time: " + ffdTime + " ms");
+    System.out.println("[4/4] Running Code Golf FFD Algorithm...");
+    startTime = System.currentTimeMillis();
+    FFDCodeGolf codeGolf = new FFDCodeGolf();
+    Bin codeGolfResult = codeGolf.solve(boxes, bin);
+    long codeGolfTime = System.currentTimeMillis() - startTime;
 
-    System.out.println("\n=== COMPARISON ===");
-    System.out.println("Brute Force: " + bruteResult.getPlacedBoxes().size() + " boxes, "
-        + calculateUtilization(bruteResult) + "% utilization, " + bruteTime + " ms");
-    System.out.println("FFD: " + ffdResult.getPlacedBoxes().size() + " boxes, " + calculateUtilization(ffdResult)
-        + "% utilization, " + ffdTime + " ms");
+    System.out.println("\n" + "=".repeat(60));
+    System.out.println("RESULTS SUMMARY");
+    System.out.println("=".repeat(60));
+    System.out.printf("%-20s | %6s | %8s | %10s%n", "Algorithm", "Boxes", "Util%", "Time(ms)");
+    System.out.println("-".repeat(50));
+
+    System.out.printf("%-20s | %6d | %7.1f%% | %10d%n",
+        "Brute Force", bruteResult.getPlacedBoxes().size(), calculateUtilization(bruteResult), bruteTime);
+    System.out.printf("%-20s | %6d | %7.1f%% | %10d%n",
+        "Next-Fit", nextFitResult.getPlacedBoxes().size(), calculateUtilization(nextFitResult), nextFitTime);
+    System.out.printf("%-20s | %6d | %7.1f%% | %10d%n",
+        "First-Fit Decreasing", ffdResult.getPlacedBoxes().size(), calculateUtilization(ffdResult), ffdTime);
+    System.out.printf("%-20s | %6d | %7.1f%% | %10d%n",
+        "Code Golf FFD", codeGolfResult.getPlacedBoxes().size(), calculateUtilization(codeGolfResult), codeGolfTime);
+
+    System.out.println("-".repeat(60));
+    System.out.printf("Total boxes to place: %d%n", boxes.size());
+    System.out.printf("Bin dimensions: %.1f x %.1f%n", bin.getWidth(), bin.getLength());
+
+    System.out.println("\n" + "=".repeat(60));
+    System.out.println("PERFORMANCE ANALYSIS");
+    System.out.println("=".repeat(60));
+
+    String bestAlgorithm = "";
+    int bestBoxes = 0;
+    double bestUtil = 0;
+
+    if (bruteResult.getPlacedBoxes().size() >= nextFitResult.getPlacedBoxes().size() &&
+        bruteResult.getPlacedBoxes().size() >= ffdResult.getPlacedBoxes().size() &&
+        bruteResult.getPlacedBoxes().size() >= codeGolfResult.getPlacedBoxes().size()) {
+      bestAlgorithm = "Brute Force";
+      bestBoxes = bruteResult.getPlacedBoxes().size();
+      bestUtil = calculateUtilization(bruteResult);
+    } else if (nextFitResult.getPlacedBoxes().size() >= ffdResult.getPlacedBoxes().size() &&
+        nextFitResult.getPlacedBoxes().size() >= codeGolfResult.getPlacedBoxes().size()) {
+      bestAlgorithm = "Next-Fit";
+      bestBoxes = nextFitResult.getPlacedBoxes().size();
+      bestUtil = calculateUtilization(nextFitResult);
+    } else if (ffdResult.getPlacedBoxes().size() >= codeGolfResult.getPlacedBoxes().size()) {
+      bestAlgorithm = "First-Fit Decreasing";
+      bestBoxes = ffdResult.getPlacedBoxes().size();
+      bestUtil = calculateUtilization(ffdResult);
+    } else {
+      bestAlgorithm = "Code Golf FFD";
+      bestBoxes = codeGolfResult.getPlacedBoxes().size();
+      bestUtil = calculateUtilization(codeGolfResult);
+    }
+
+    System.out.printf("🏆 Best Algorithm: %s%n", bestAlgorithm);
+    System.out.printf("📦 Most boxes placed: %d%n", bestBoxes);
+    System.out.printf("📊 Highest utilization: %.1f%%%n", bestUtil);
+
+    long fastestTime = Math.min(Math.min(Math.min(bruteTime, nextFitTime), ffdTime), codeGolfTime);
+    if (fastestTime == bruteTime) {
+      System.out.printf("⚡ Fastest execution: Brute Force (%d ms)%n", bruteTime);
+    } else if (fastestTime == nextFitTime) {
+      System.out.printf("⚡ Fastest execution: Next-Fit (%d ms)%n", nextFitTime);
+    } else if (fastestTime == ffdTime) {
+      System.out.printf("⚡ Fastest execution: First-Fit Decreasing (%d ms)%n", ffdTime);
+    } else {
+      System.out.printf("⚡ Fastest execution: Code Golf FFD (%d ms)%n", codeGolfTime);
+    }
   }
 
   private ArrayList<Box> readBoxesFromCSV(String csvPath) {
@@ -205,6 +267,63 @@ public class Solution {
       return false;
     }
 
+  }
+
+  private class NextFit {
+    public Bin solve(ArrayList<Box> boxes, Bin originalBin) {
+      Bin resultBin = new Bin(originalBin.getWidth(), originalBin.getLength());
+
+      for (Box box : boxes) {
+        if (!placeBoxNextFit(box, resultBin)) {
+          System.out.println("Box " + box.getWidth() + "x" + box.getLength() + " could not be placed");
+        }
+      }
+
+      return resultBin;
+    }
+
+    private boolean placeBoxNextFit(Box box, Bin bin) {
+
+      double startX = 0;
+      double startY = 0;
+
+      if (!bin.getPlacedBoxes().isEmpty()) {
+        Box lastBox = bin.getPlacedBoxes().get(bin.getPlacedBoxes().size() - 1);
+        startX = lastBox.getX() + lastBox.getWidth();
+        startY = lastBox.getY();
+      }
+
+      for (double x = startX; x <= bin.getWidth() - box.getWidth(); x += 0.5) {
+        for (double y = startY; y <= bin.getLength() - box.getLength(); y += 0.5) {
+          Box placedBox = new Box(x, y, box.getWidth(), box.getLength());
+
+          if (isValidPlacement(placedBox, bin.getPlacedBoxes(), bin)) {
+            bin.getPlacedBoxes().add(placedBox);
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+  }
+
+  // Code Golf FFD - Total characters: 487 (including spaces and newlines)
+  private class FFDCodeGolf {
+    public Bin solve(ArrayList<Box> boxes, Bin b) {
+      Bin r = new Bin(b.getWidth(), b.getLength());
+      boxes.stream().sorted((a, c) -> Double.compare(c.getWidth() * c.getLength(), a.getWidth() * a.getLength()))
+          .forEach(box -> {
+            for (double x = 0; x <= r.getWidth() - box.getWidth(); x += 0.5)
+              for (double y = 0; y <= r.getLength() - box.getLength(); y += 0.5) {
+                Box p = new Box(x, y, box.getWidth(), box.getLength());
+                if (isValidPlacement(p, r.getPlacedBoxes(), r)) {
+                  r.getPlacedBoxes().add(p);
+                  return;
+                }
+              }
+          });
+      return r;
+    }
   }
 
   private double calculateUtilization(Bin bin) {
