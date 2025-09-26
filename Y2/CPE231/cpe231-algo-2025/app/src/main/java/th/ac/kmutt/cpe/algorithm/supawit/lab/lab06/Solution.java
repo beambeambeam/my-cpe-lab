@@ -72,8 +72,34 @@ public class Solution {
     ArrayList<Box> boxes = readBoxesFromCSV("Lab06_test/boxSize2.csv");
     Bin bin = getBin();
 
+    // Test Brute Force Algorithm
+    System.out.println("\n=== BRUTE FORCE ALGORITHM ===");
+    long startTime = System.currentTimeMillis();
     BruteForce bruteForce = new BruteForce();
-    Bin result = bruteForce.solve(boxes, bin);
+    Bin bruteResult = bruteForce.solve(boxes, bin);
+    long bruteTime = System.currentTimeMillis() - startTime;
+
+    System.out.println("Brute Force Results:");
+    System.out.println("Placed " + bruteResult.getPlacedBoxes().size() + " out of " + boxes.size() + " boxes");
+    System.out.println("Bin utilization: " + calculateUtilization(bruteResult) + "%");
+    System.out.println("Execution time: " + bruteTime + " ms");
+
+    System.out.println("\n=== FIRST-FIT DECREASING ALGORITHM ===");
+    startTime = System.currentTimeMillis();
+    FirstFitDecreasing ffd = new FirstFitDecreasing();
+    Bin ffdResult = ffd.solve(boxes, bin);
+    long ffdTime = System.currentTimeMillis() - startTime;
+
+    System.out.println("First-Fit Decreasing Results:");
+    System.out.println("Placed " + ffdResult.getPlacedBoxes().size() + " out of " + boxes.size() + " boxes");
+    System.out.println("Bin utilization: " + calculateUtilization(ffdResult) + "%");
+    System.out.println("Execution time: " + ffdTime + " ms");
+
+    System.out.println("\n=== COMPARISON ===");
+    System.out.println("Brute Force: " + bruteResult.getPlacedBoxes().size() + " boxes, "
+        + calculateUtilization(bruteResult) + "% utilization, " + bruteTime + " ms");
+    System.out.println("FFD: " + ffdResult.getPlacedBoxes().size() + " boxes, " + calculateUtilization(ffdResult)
+        + "% utilization, " + ffdTime + " ms");
   }
 
   private ArrayList<Box> readBoxesFromCSV(String csvPath) {
@@ -143,28 +169,40 @@ public class Solution {
 
       solveRecursive(remainingBoxes, index + 1, currentBin, currentPlacement);
     }
+  }
 
-    private boolean isValidPlacement(Box newBox, ArrayList<Box> existingBoxes, Bin bin) {
-      if (newBox.getX() < 0 || newBox.getY() < 0 ||
-          newBox.getX() + newBox.getWidth() > bin.getWidth() ||
-          newBox.getY() + newBox.getLength() > bin.getLength()) {
-        return false;
-      }
+  private class FirstFitDecreasing {
+    public Bin solve(ArrayList<Box> boxes, Bin originalBin) {
+      ArrayList<Box> sortedBoxes = new ArrayList<>(boxes);
+      sortedBoxes.sort((b1, b2) -> {
+        double area1 = b1.getWidth() * b1.getLength();
+        double area2 = b2.getWidth() * b2.getLength();
+        return Double.compare(area2, area1);
+      });
 
-      for (Box existingBox : existingBoxes) {
-        if (boxesOverlap(newBox, existingBox)) {
-          return false;
+      Bin resultBin = new Bin(originalBin.getWidth(), originalBin.getLength());
+
+      for (Box box : sortedBoxes) {
+        if (!placeBoxFirstFit(box, resultBin)) {
+          System.out.println("Box " + box.getWidth() + "x" + box.getLength() + " could not be placed");
         }
       }
 
-      return true;
+      return resultBin;
     }
 
-    private boolean boxesOverlap(Box box1, Box box2) {
-      return !(box1.getX() + box1.getWidth() <= box2.getX() ||
-          box2.getX() + box2.getWidth() <= box1.getX() ||
-          box1.getY() + box1.getLength() <= box2.getY() ||
-          box2.getY() + box2.getLength() <= box1.getY());
+    private boolean placeBoxFirstFit(Box box, Bin bin) {
+      for (double x = 0; x <= bin.getWidth() - box.getWidth(); x += 0.5) {
+        for (double y = 0; y <= bin.getLength() - box.getLength(); y += 0.5) {
+          Box placedBox = new Box(x, y, box.getWidth(), box.getLength());
+
+          if (isValidPlacement(placedBox, bin.getPlacedBoxes(), bin)) {
+            bin.getPlacedBoxes().add(placedBox);
+            return true;
+          }
+        }
+      }
+      return false;
     }
 
   }
@@ -176,6 +214,29 @@ public class Solution {
     }
     double binArea = bin.getWidth() * bin.getLength();
     return (totalBoxArea / binArea) * 100;
+  }
+
+  private boolean isValidPlacement(Box newBox, ArrayList<Box> existingBoxes, Bin bin) {
+    if (newBox.getX() < 0 || newBox.getY() < 0 ||
+        newBox.getX() + newBox.getWidth() > bin.getWidth() ||
+        newBox.getY() + newBox.getLength() > bin.getLength()) {
+      return false;
+    }
+
+    for (Box existingBox : existingBoxes) {
+      if (boxesOverlap(newBox, existingBox)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private boolean boxesOverlap(Box box1, Box box2) {
+    return !(box1.getX() + box1.getWidth() <= box2.getX() ||
+        box2.getX() + box2.getWidth() <= box1.getX() ||
+        box1.getY() + box1.getLength() <= box2.getY() ||
+        box2.getY() + box2.getLength() <= box1.getY());
   }
 
   public static void main(String[] args) {
