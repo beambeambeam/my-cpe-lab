@@ -71,6 +71,9 @@ public class Solution {
   public void binPackingCSVTestCase() {
     ArrayList<Box> boxes = readBoxesFromCSV("Lab06_test/boxSize2.csv");
     Bin bin = getBin();
+
+    BruteForce bruteForce = new BruteForce();
+    Bin result = bruteForce.solve(boxes, bin);
   }
 
   private ArrayList<Box> readBoxesFromCSV(String csvPath) {
@@ -105,6 +108,74 @@ public class Solution {
     }
 
     return boxes;
+  }
+
+  private class BruteForce {
+    public Bin solve(ArrayList<Box> boxes, Bin originalBin) {
+      Bin bestBin = new Bin(originalBin.getWidth(), originalBin.getLength());
+      solveRecursive(boxes, 0, bestBin, new ArrayList<>());
+      return bestBin;
+    }
+
+    private void solveRecursive(ArrayList<Box> remainingBoxes, int index, Bin currentBin,
+        ArrayList<Box> currentPlacement) {
+      if (index >= remainingBoxes.size()) {
+        if (currentPlacement.size() > currentBin.getPlacedBoxes().size()) {
+          currentBin.placedBoxes.clear();
+          currentBin.placedBoxes.addAll(currentPlacement);
+        }
+        return;
+      }
+
+      Box currentBox = remainingBoxes.get(index);
+
+      for (double x = 0; x <= currentBin.getWidth() - currentBox.getWidth(); x += 0.5) {
+        for (double y = 0; y <= currentBin.getLength() - currentBox.getLength(); y += 0.5) {
+          Box placedBox = new Box(x, y, currentBox.getWidth(), currentBox.getLength());
+
+          if (isValidPlacement(placedBox, currentPlacement, currentBin)) {
+            currentPlacement.add(placedBox);
+            solveRecursive(remainingBoxes, index + 1, currentBin, currentPlacement);
+            currentPlacement.remove(currentPlacement.size() - 1);
+          }
+        }
+      }
+
+      solveRecursive(remainingBoxes, index + 1, currentBin, currentPlacement);
+    }
+
+    private boolean isValidPlacement(Box newBox, ArrayList<Box> existingBoxes, Bin bin) {
+      if (newBox.getX() < 0 || newBox.getY() < 0 ||
+          newBox.getX() + newBox.getWidth() > bin.getWidth() ||
+          newBox.getY() + newBox.getLength() > bin.getLength()) {
+        return false;
+      }
+
+      for (Box existingBox : existingBoxes) {
+        if (boxesOverlap(newBox, existingBox)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    private boolean boxesOverlap(Box box1, Box box2) {
+      return !(box1.getX() + box1.getWidth() <= box2.getX() ||
+          box2.getX() + box2.getWidth() <= box1.getX() ||
+          box1.getY() + box1.getLength() <= box2.getY() ||
+          box2.getY() + box2.getLength() <= box1.getY());
+    }
+
+  }
+
+  private double calculateUtilization(Bin bin) {
+    double totalBoxArea = 0;
+    for (Box box : bin.getPlacedBoxes()) {
+      totalBoxArea += box.getWidth() * box.getLength();
+    }
+    double binArea = bin.getWidth() * bin.getLength();
+    return (totalBoxArea / binArea) * 100;
   }
 
   public static void main(String[] args) {
