@@ -31,11 +31,6 @@ public class Solution {
     public double getLength() {
       return length;
     }
-
-    @Override
-    public String toString() {
-      return "Box[x=" + x + ", y=" + y + ", width=" + width + ", length=" + length + ", size=" + (width * length) + "]";
-    }
   }
 
   private class Bin {
@@ -132,6 +127,7 @@ public class Solution {
   }
 
   private void prettifiedPrintSpace(Bin bin, ArrayList<Box> sortedBoxes) {
+    System.out.println("\n");
     double maxX = 0, maxY = 0;
     for (ArrayList<Box> row : bin.space) {
       for (Box box : row) {
