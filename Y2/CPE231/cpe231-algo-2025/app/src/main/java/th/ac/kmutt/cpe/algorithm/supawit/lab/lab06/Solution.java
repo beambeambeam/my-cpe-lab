@@ -4,10 +4,13 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
+  private static final double EPSILON = 1e-9;
+
   private class Box {
-    public Double x;
-    public Double y;
-    public double width, length;
+    public double x;
+    public double y;
+    public double width;
+    public double length;
 
     public Box(double x, double y, double w, double h) {
       this.x = x;
@@ -44,17 +47,17 @@ public class Solution {
     }
 
     public boolean placeBox(Box box, double x, double y) {
-      if (x < 0 || y < 0 || x + box.getWidth() > this.width || y + box.getLength() > this.length) {
+      if (x < -EPSILON || y < -EPSILON ||
+          x + box.getWidth() > this.width + EPSILON ||
+          y + box.getLength() > this.length + EPSILON) {
         return false;
       }
 
       Box newBox = new Box(x, y, box.getWidth(), box.getLength());
 
-      for (ArrayList<Box> row : space) {
-        for (Box placedBox : row) {
-          if (isOverlap(newBox, placedBox)) {
-            return false;
-          }
+      for (Box placedBox : getAllPlacedBoxes()) {
+        if (isOverlap(newBox, placedBox)) {
+          return false;
         }
       }
 
@@ -68,11 +71,19 @@ public class Solution {
       return true;
     }
 
+    public ArrayList<Box> getAllPlacedBoxes() {
+      ArrayList<Box> allBoxes = new ArrayList<>();
+      for (ArrayList<Box> row : space) {
+        allBoxes.addAll(row);
+      }
+      return allBoxes;
+    }
+
     private boolean isOverlap(Box a, Box b) {
-      return !(a.getX() + a.getWidth() <= b.getX() ||
-          b.getX() + b.getWidth() <= a.getX() ||
-          a.getY() + a.getLength() <= b.getY() ||
-          b.getY() + b.getLength() <= a.getY());
+      return !(a.getX() + a.getWidth() <= b.getX() + EPSILON ||
+          b.getX() + b.getWidth() <= a.getX() + EPSILON ||
+          a.getY() + a.getLength() <= b.getY() + EPSILON ||
+          b.getY() + b.getLength() <= a.getY() + EPSILON);
     }
 
     public double getLength() {
@@ -95,35 +106,54 @@ public class Solution {
     });
 
     for (Box box : sortedBoxes) {
-      boolean placed = false;
-
-      outer: for (double y = 0; y <= bin.getLength() - box.getLength(); y++) {
-        for (double x = 0; x <= bin.getWidth() - box.getWidth(); x++) {
-          Box testBox = new Box(x, y, box.getWidth(), box.getLength());
-          boolean overlap = false;
-          for (ArrayList<Box> row : bin.space) {
-            for (Box placedBox : row) {
-              if (bin.isOverlap(testBox, placedBox)) {
-                overlap = true;
-                break;
-              }
-            }
-            if (overlap)
-              break;
-          }
-          if (!overlap) {
-            bin.placeBox(box, x, y);
-            placed = true;
-            break outer;
-          }
-        }
-      }
-      if (!placed) {
+      if (!placeBoxOptimally(bin, box)) {
         System.out.println("Box " + box.getWidth() + "x" + box.getLength() + " could not be placed in the bin.");
       }
     }
 
     prettifiedPrintSpace(bin, sortedBoxes);
+  }
+
+  private boolean placeBoxOptimally(Bin bin, Box box) {
+    ArrayList<Double> xPositions = getCandidateXPositions(bin, box);
+    ArrayList<Double> yPositions = getCandidateYPositions(bin, box);
+
+    for (double y : yPositions) {
+      for (double x : xPositions) {
+        if (bin.placeBox(box, x, y)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private ArrayList<Double> getCandidateXPositions(Bin bin, Box box) {
+    TreeSet<Double> positions = new TreeSet<>();
+
+    positions.add(0.0);
+    positions.add(Math.max(0, bin.getWidth() - box.getWidth()));
+
+    for (Box placedBox : bin.getAllPlacedBoxes()) {
+      positions.add(Math.max(0, placedBox.getX() - box.getWidth()));
+      positions.add(placedBox.getX() + placedBox.getWidth());
+    }
+
+    return new ArrayList<>(positions);
+  }
+
+  private ArrayList<Double> getCandidateYPositions(Bin bin, Box box) {
+    TreeSet<Double> positions = new TreeSet<>();
+
+    positions.add(0.0);
+    positions.add(Math.max(0, bin.getLength() - box.getLength()));
+
+    for (Box placedBox : bin.getAllPlacedBoxes()) {
+      positions.add(Math.max(0, placedBox.getY() - box.getLength()));
+      positions.add(placedBox.getY() + placedBox.getLength());
+    }
+
+    return new ArrayList<>(positions);
   }
 
   private void prettifiedPrintSpace(Bin bin, ArrayList<Box> sortedBoxes) {
@@ -154,8 +184,8 @@ public class Solution {
           int boxIndex = -1;
           for (int i = 0; i < sortedBoxes.size(); i++) {
             Box sortedBox = sortedBoxes.get(i);
-            if (Math.abs(sortedBox.getWidth() - box.getWidth()) < 0.001 &&
-                Math.abs(sortedBox.getLength() - box.getLength()) < 0.001) {
+            if (isApproximatelyEqual(sortedBox.getWidth(), box.getWidth()) &&
+                isApproximatelyEqual(sortedBox.getLength(), box.getLength())) {
               boxIndex = i;
               break;
             }
@@ -237,6 +267,10 @@ public class Solution {
     }
 
     return boxes;
+  }
+
+  private boolean isApproximatelyEqual(double a, double b) {
+    return Math.abs(a - b) < EPSILON;
   }
 
   public static void main(String[] args) {
