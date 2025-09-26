@@ -158,18 +158,9 @@ public class Solution {
 
   private void prettifiedPrintSpace(Bin bin, ArrayList<Box> sortedBoxes) {
     System.out.println("\n");
-    double maxX = 0, maxY = 0;
-    for (ArrayList<Box> row : bin.space) {
-      for (Box box : row) {
-        if (box.getX() != -1 && box.getY() != -1) {
-          maxX = Math.max(maxX, box.getX() + box.getWidth());
-          maxY = Math.max(maxY, box.getY() + box.getLength());
-        }
-      }
-    }
 
-    int gridWidth = (int) Math.ceil(maxX + 5);
-    int gridLength = (int) Math.ceil(maxY + 5);
+    int gridWidth = (int) Math.ceil(bin.getWidth()) + 2;
+    int gridLength = (int) Math.ceil(bin.getLength()) + 2;
 
     int[][] grid = new int[gridLength][gridWidth];
     for (int i = 0; i < gridLength; i++) {
@@ -191,10 +182,10 @@ public class Solution {
             }
           }
 
-          int startX = (int) Math.floor(box.getX());
-          int startY = (int) Math.floor(box.getY());
-          int endX = (int) Math.ceil(box.getX() + box.getWidth());
-          int endY = (int) Math.ceil(box.getY() + box.getLength());
+          int startX = (int) Math.floor(box.getX()) + 1;
+          int startY = (int) Math.floor(box.getY()) + 1;
+          int endX = (int) Math.ceil(box.getX() + box.getWidth()) + 1;
+          int endY = (int) Math.ceil(box.getY() + box.getLength()) + 1;
 
           for (int y = startY; y < endY && y < gridLength; y++) {
             for (int x = startX; x < endX && x < gridWidth; x++) {
@@ -208,7 +199,11 @@ public class Solution {
     for (int y = 0; y < gridLength; y++) {
       for (int x = 0; x < gridWidth; x++) {
         if (grid[y][x] == -1) {
-          System.out.print("- ");
+          if (y == 0 || y == gridLength - 1 || x == 0 || x == gridWidth - 1) {
+            System.out.print("X ");
+          } else {
+            System.out.print("- ");
+          }
         } else {
           System.out.print(grid[y][x] + " ");
         }
