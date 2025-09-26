@@ -34,3 +34,7 @@ application {
     // Define the main class for the application.
     mainClass = 'th.ac.kmutt.cpe.algorithm.supawit.App'
 }
+
+run {
+    standardInput = System.in
+}
