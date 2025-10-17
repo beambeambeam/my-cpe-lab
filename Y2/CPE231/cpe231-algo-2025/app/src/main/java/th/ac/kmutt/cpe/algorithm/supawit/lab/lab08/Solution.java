@@ -83,4 +83,29 @@ public class Solution {
       printer.printArrays(dpAsc, dpDesc);
     }
   }
+
+  public static class TheSpiritMerchant {
+    public static class InputReader {
+      // User will implement
+    }
+
+    public static class OutputPrinter {
+      // User will implement
+    }
+
+    public static int solve(int n, int T, int[] times, int[] revenues) {
+      // User will implement
+      return 0;
+    }
+
+    public static void main(String[] args) {
+      InputReader reader = new InputReader();
+      // User reads input via InputReader methods
+
+      // int result = solve(...);
+
+      OutputPrinter printer = new OutputPrinter();
+      // printer.printResult(result);
+    }
+  }
 }
