@@ -86,19 +86,82 @@ public class Solution {
 
   public static class TheSpiritMerchant {
     public static class InputReader {
+      private Scanner scanner;
+
+      public InputReader() {
+        this.scanner = new Scanner(System.in);
+      }
+
+      public int[] readInput() {
+        int n = scanner.nextInt();
+        int T = scanner.nextInt();
+        int[] times = new int[n];
+        int[] revenues = new int[n];
+
+        for (int i = 0; i < n; i++) {
+          times[i] = scanner.nextInt();
+          revenues[i] = scanner.nextInt();
+        }
+
+        int[] result = new int[2 + 2 * n];
+        result[0] = n;
+        result[1] = T;
+        for (int i = 0; i < n; i++) {
+          result[2 + i] = times[i];
+          result[2 + n + i] = revenues[i];
+        }
+
+        return result;
+      }
+
+      public void close() {
+        if (scanner != null) {
+          scanner.close();
+        }
+      }
     }
 
     public static class OutputPrinter {
+      public void printResult(int result) {
+        System.out.println(result);
+      }
     }
 
     public static int solve(int n, int T, int[] times, int[] revenues) {
-      return 0;
+      int[][] dp = new int[n + 1][T + 1];
+
+      for (int i = 1; i <= n; i++) {
+        for (int w = 0; w <= T; w++) {
+          if (times[i - 1] <= w) {
+            dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - times[i - 1]] + revenues[i - 1]);
+          } else {
+            dp[i][w] = dp[i - 1][w];
+          }
+        }
+      }
+
+      return dp[n][T];
     }
 
     public static void main(String[] args) {
       InputReader reader = new InputReader();
+      int[] input = reader.readInput();
+      reader.close();
+
+      int n = input[0];
+      int T = input[1];
+      int[] times = new int[n];
+      int[] revenues = new int[n];
+
+      for (int i = 0; i < n; i++) {
+        times[i] = input[2 + i];
+        revenues[i] = input[2 + n + i];
+      }
+
+      int result = solve(n, T, times, revenues);
 
       OutputPrinter printer = new OutputPrinter();
+      printer.printResult(result);
     }
   }
 
