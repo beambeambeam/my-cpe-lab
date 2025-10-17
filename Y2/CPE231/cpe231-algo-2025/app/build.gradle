@@ -38,3 +38,15 @@ application {
 run {
     standardInput = System.in
 }
+
+task testAndOpen(type: Exec) {
+    description = 'Run tests and open HTML report in browser'
+    group = 'verification'
+
+    // Use shell to run tests and open browser even if tests fail
+    commandLine 'bash', '-c', '../gradlew test; open build/reports/tests/test/index.html'
+
+    doLast {
+        println "Test report opened in browser!"
+    }
+}
