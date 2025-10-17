@@ -5,30 +5,6 @@ import java.util.Scanner;
 public class Solution {
 
   public static class Z {
-    public static int[] readSequence(Scanner scanner) {
-      int n = scanner.nextInt();
-      int[] sequence = new int[n];
-      for (int i = 0; i < n; i++) {
-        sequence[i] = scanner.nextInt();
-      }
-      return sequence;
-    }
-
-    public static void printArrays(int[] dpAsc, int[] dpDesc) {
-      for (int i = 0; i < dpAsc.length; i++) {
-        System.out.print(dpAsc[i]);
-        if (i < dpAsc.length - 1)
-          System.out.print(" ");
-      }
-      System.out.println();
-
-      for (int i = 0; i < dpDesc.length; i++) {
-        System.out.print(dpDesc[i]);
-        if (i < dpDesc.length - 1)
-          System.out.print(" ");
-      }
-      System.out.println();
-    }
 
     public static int[][] solve(int[] sequence) {
       int n = sequence.length;
@@ -56,14 +32,30 @@ public class Solution {
 
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      int[] sequence = readSequence(scanner);
+      int n = scanner.nextInt();
+      int[] sequence = new int[n];
+      for (int i = 0; i < n; i++) {
+        sequence[i] = scanner.nextInt();
+      }
       scanner.close();
 
       int[][] result = solve(sequence);
       int[] dpAsc = result[0];
       int[] dpDesc = result[1];
 
-      printArrays(dpAsc, dpDesc);
+      for (int i = 0; i < dpAsc.length; i++) {
+        System.out.print(dpAsc[i]);
+        if (i < dpAsc.length - 1)
+          System.out.print(" ");
+      }
+      System.out.println();
+
+      for (int i = 0; i < dpDesc.length; i++) {
+        System.out.print(dpDesc[i]);
+        if (i < dpDesc.length - 1)
+          System.out.print(" ");
+      }
+      System.out.println();
     }
   }
 
