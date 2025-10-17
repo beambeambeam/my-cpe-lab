@@ -4,11 +4,13 @@
 package th.ac.kmutt.cpe.algorithm.supawit;
 
 import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.Z;
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.TheSpiritMerchant;;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.TheSpiritMerchant;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.EOD;
 
 public class App {
   public static void main(String[] args) {
-    // Z.main(args);
-    TheSpiritMerchant.main(args);
+    Z.main(args);
+    // TheSpiritMerchant.main(args);
+    // EOD.main(args);
   }
 }
