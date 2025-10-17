@@ -133,12 +133,26 @@ public class Solution {
 
   public static class EOD {
     public static int solve(int n, int[] blastRadius) {
-      return 0;
+      int[] dp = new int[n + 1];
+      for (int i = n - 1; i >= 0; i--) {
+        int nextIndex = i + blastRadius[i] + 1;
+        int take = 1 + blastRadius[i] + (nextIndex <= n ? dp[nextIndex] : 0);
+        int skip = dp[i + 1];
+        dp[i] = Math.max(take, skip);
+      }
+      return dp[0];
     }
 
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
+      int n = scanner.nextInt();
+      int[] b = new int[n];
+      for (int i = 0; i < n; i++) {
+        b[i] = scanner.nextInt();
+      }
       scanner.close();
+      int result = solve(n, b);
+      System.out.println(result);
     }
   }
 }
