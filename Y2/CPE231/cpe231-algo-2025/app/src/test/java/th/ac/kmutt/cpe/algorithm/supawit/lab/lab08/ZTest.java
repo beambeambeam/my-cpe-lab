@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
  * Test suite for the Zigzag Subsequence problem (Lab 08, Problem Z).
  * Tests the solve method with the three provided examples.
  */
-public class SolutionTest {
+public class ZTest {
 
   /**
    * Test Example 1: Sequence [13, 93, 86, 50, 63, 4]
