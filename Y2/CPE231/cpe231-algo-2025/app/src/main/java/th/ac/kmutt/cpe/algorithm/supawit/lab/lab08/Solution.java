@@ -108,4 +108,29 @@ public class Solution {
       // printer.printResult(result);
     }
   }
+
+  public static class EOD {
+    public static class InputReader {
+      // User will implement
+    }
+
+    public static class OutputPrinter {
+      // User will implement
+    }
+
+    public static int solve(int n, int[] blastRadius) {
+      // User will implement
+      return 0;
+    }
+
+    public static void main(String[] args) {
+      InputReader reader = new InputReader();
+      // User reads input via InputReader methods
+
+      // int result = solve(...);
+
+      OutputPrinter printer = new OutputPrinter();
+      // printer.printResult(result);
+    }
+  }
 }
