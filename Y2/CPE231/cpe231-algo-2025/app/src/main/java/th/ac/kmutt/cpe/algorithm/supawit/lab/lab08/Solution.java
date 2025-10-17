@@ -60,31 +60,6 @@ public class Solution {
   }
 
   public static class TheSpiritMerchant {
-    public static int[] readInput(Scanner scanner) {
-      int n = scanner.nextInt();
-      int T = scanner.nextInt();
-      int[] times = new int[n];
-      int[] revenues = new int[n];
-
-      for (int i = 0; i < n; i++) {
-        times[i] = scanner.nextInt();
-        revenues[i] = scanner.nextInt();
-      }
-
-      int[] result = new int[2 + 2 * n];
-      result[0] = n;
-      result[1] = T;
-      for (int i = 0; i < n; i++) {
-        result[2 + i] = times[i];
-        result[2 + n + i] = revenues[i];
-      }
-
-      return result;
-    }
-
-    public static void printResult(int result) {
-      System.out.println(result);
-    }
 
     public static int solve(int n, int T, int[] times, int[] revenues) {
       int[][] dp = new int[n + 1][T + 1];
@@ -104,22 +79,18 @@ public class Solution {
 
     public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      int[] input = readInput(scanner);
-      scanner.close();
-
-      int n = input[0];
-      int T = input[1];
+      int n = scanner.nextInt();
+      int T = scanner.nextInt();
       int[] times = new int[n];
       int[] revenues = new int[n];
-
       for (int i = 0; i < n; i++) {
-        times[i] = input[2 + i];
-        revenues[i] = input[2 + n + i];
+        times[i] = scanner.nextInt();
+        revenues[i] = scanner.nextInt();
       }
+      scanner.close();
 
       int result = solve(n, T, times, revenues);
-
-      printResult(result);
+      System.out.println(result);
     }
   }
 
