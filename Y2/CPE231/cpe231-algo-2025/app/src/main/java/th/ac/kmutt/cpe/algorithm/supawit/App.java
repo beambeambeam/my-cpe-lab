@@ -3,11 +3,10 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab06.Solution;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.Z;
 
 public class App {
   public static void main(String[] args) {
-    Solution solution = new Solution();
-    solution.binPackingCSVTestCase();
+    Z.main(args);
   }
 }
