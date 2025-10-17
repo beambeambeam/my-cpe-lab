@@ -5,45 +5,29 @@ import java.util.Scanner;
 public class Solution {
 
   public static class Z {
-    public static class InputReader {
-      private Scanner scanner;
-
-      public InputReader() {
-        this.scanner = new Scanner(System.in);
+    public static int[] readSequence(Scanner scanner) {
+      int n = scanner.nextInt();
+      int[] sequence = new int[n];
+      for (int i = 0; i < n; i++) {
+        sequence[i] = scanner.nextInt();
       }
-
-      public int[] readSequence() {
-        int n = scanner.nextInt();
-        int[] sequence = new int[n];
-        for (int i = 0; i < n; i++) {
-          sequence[i] = scanner.nextInt();
-        }
-        return sequence;
-      }
-
-      public void close() {
-        if (scanner != null) {
-          scanner.close();
-        }
-      }
+      return sequence;
     }
 
-    public static class OutputPrinter {
-      public void printArrays(int[] dpAsc, int[] dpDesc) {
-        for (int i = 0; i < dpAsc.length; i++) {
-          System.out.print(dpAsc[i]);
-          if (i < dpAsc.length - 1)
-            System.out.print(" ");
-        }
-        System.out.println();
-
-        for (int i = 0; i < dpDesc.length; i++) {
-          System.out.print(dpDesc[i]);
-          if (i < dpDesc.length - 1)
-            System.out.print(" ");
-        }
-        System.out.println();
+    public static void printArrays(int[] dpAsc, int[] dpDesc) {
+      for (int i = 0; i < dpAsc.length; i++) {
+        System.out.print(dpAsc[i]);
+        if (i < dpAsc.length - 1)
+          System.out.print(" ");
       }
+      System.out.println();
+
+      for (int i = 0; i < dpDesc.length; i++) {
+        System.out.print(dpDesc[i]);
+        if (i < dpDesc.length - 1)
+          System.out.print(" ");
+      }
+      System.out.println();
     }
 
     public static int[][] solve(int[] sequence) {
@@ -71,60 +55,43 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-      InputReader reader = new InputReader();
-      int[] sequence = reader.readSequence();
-      reader.close();
+      Scanner scanner = new Scanner(System.in);
+      int[] sequence = readSequence(scanner);
+      scanner.close();
 
       int[][] result = solve(sequence);
       int[] dpAsc = result[0];
       int[] dpDesc = result[1];
 
-      OutputPrinter printer = new OutputPrinter();
-      printer.printArrays(dpAsc, dpDesc);
+      printArrays(dpAsc, dpDesc);
     }
   }
 
   public static class TheSpiritMerchant {
-    public static class InputReader {
-      private Scanner scanner;
+    public static int[] readInput(Scanner scanner) {
+      int n = scanner.nextInt();
+      int T = scanner.nextInt();
+      int[] times = new int[n];
+      int[] revenues = new int[n];
 
-      public InputReader() {
-        this.scanner = new Scanner(System.in);
+      for (int i = 0; i < n; i++) {
+        times[i] = scanner.nextInt();
+        revenues[i] = scanner.nextInt();
       }
 
-      public int[] readInput() {
-        int n = scanner.nextInt();
-        int T = scanner.nextInt();
-        int[] times = new int[n];
-        int[] revenues = new int[n];
-
-        for (int i = 0; i < n; i++) {
-          times[i] = scanner.nextInt();
-          revenues[i] = scanner.nextInt();
-        }
-
-        int[] result = new int[2 + 2 * n];
-        result[0] = n;
-        result[1] = T;
-        for (int i = 0; i < n; i++) {
-          result[2 + i] = times[i];
-          result[2 + n + i] = revenues[i];
-        }
-
-        return result;
+      int[] result = new int[2 + 2 * n];
+      result[0] = n;
+      result[1] = T;
+      for (int i = 0; i < n; i++) {
+        result[2 + i] = times[i];
+        result[2 + n + i] = revenues[i];
       }
 
-      public void close() {
-        if (scanner != null) {
-          scanner.close();
-        }
-      }
+      return result;
     }
 
-    public static class OutputPrinter {
-      public void printResult(int result) {
-        System.out.println(result);
-      }
+    public static void printResult(int result) {
+      System.out.println(result);
     }
 
     public static int solve(int n, int T, int[] times, int[] revenues) {
@@ -144,9 +111,9 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-      InputReader reader = new InputReader();
-      int[] input = reader.readInput();
-      reader.close();
+      Scanner scanner = new Scanner(System.in);
+      int[] input = readInput(scanner);
+      scanner.close();
 
       int n = input[0];
       int T = input[1];
@@ -160,26 +127,18 @@ public class Solution {
 
       int result = solve(n, T, times, revenues);
 
-      OutputPrinter printer = new OutputPrinter();
-      printer.printResult(result);
+      printResult(result);
     }
   }
 
   public static class EOD {
-    public static class InputReader {
-    }
-
-    public static class OutputPrinter {
-    }
-
     public static int solve(int n, int[] blastRadius) {
       return 0;
     }
 
     public static void main(String[] args) {
-      InputReader reader = new InputReader();
-
-      OutputPrinter printer = new OutputPrinter();
+      Scanner scanner = new Scanner(System.in);
+      scanner.close();
     }
   }
 }
