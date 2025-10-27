@@ -14,7 +14,6 @@ public class P003_PresortMode {
     System.out.println(mode);
 
     scanner.close();
-
   }
 
   private static int presortMode(int[] l) {
