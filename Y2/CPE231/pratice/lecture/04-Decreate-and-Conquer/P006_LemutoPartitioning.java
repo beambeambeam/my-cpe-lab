@@ -20,10 +20,6 @@ public class P006_LemutoPartitioning {
     int[] A = { 4, 1, 10, 8, 7, 12, 9, 2, 15 };
     int pivotIndex = lomutoPartition(A, 0, A.length - 1);
     System.out.println("Pivot index: " + pivotIndex);
-    System.out.print("Partitioned array: ");
-    for (int num : A) {
-      System.out.print(num + " ");
-    }
-    System.out.println();
+    System.out.println("Partitioned array: " + java.util.Arrays.toString(A));
   }
 }
