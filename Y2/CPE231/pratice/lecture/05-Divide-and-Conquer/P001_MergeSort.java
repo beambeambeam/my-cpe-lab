@@ -33,16 +33,16 @@ public class P001_MergeSort {
   public static void mergeSort(int[] A) {
     int n = A.length;
     if (n > 1) {
-      int[] B = new int[n/2];
-      int[] C = new int[(n+1)/2];
-      
-      for (int i = 0; i < n/2; i++) {
+      int[] B = new int[n / 2];
+      int[] C = new int[(n + 1) / 2];
+
+      for (int i = 0; i < n / 2; i++) {
         B[i] = A[i];
       }
-      for (int i = 0; i < (n+1)/2; i++) {
-        C[i] = A[n/2 + i];
+      for (int i = 0; i < (n + 1) / 2; i++) {
+        C[i] = A[n / 2 + i];
       }
-      
+
       mergeSort(B);
       mergeSort(C);
       merge(B, C, A);

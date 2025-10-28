@@ -19,7 +19,7 @@ public class P002_PresortElementUniquesness {
   private static boolean presortElementUniqueness(int[] A) {
     int n = A.length;
     Arrays.sort(A);
-    
+
     for (int i = 0; i < n - 1; i++) {
       if (A[i] == A[i + 1]) {
         return false;
