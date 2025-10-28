@@ -1,7 +1,7 @@
 
 public class P004_HorspoolMatching {
 
-  public static int[] ShiftTable(String pattern, int alphabetSize) {
+  public static int[] shiftTable(String pattern, int alphabetSize) {
     int m = pattern.length();
     int[] table = new int[alphabetSize];
 
@@ -17,10 +17,10 @@ public class P004_HorspoolMatching {
     return table;
   }
 
-  public static int HorspoolMatching(String pattern, String text) {
+  public static int horspoolMatching(String pattern, String text) {
     int m = pattern.length();
     int n = text.length();
-    int[] table = ShiftTable(pattern, 128);
+    int[] table = shiftTable(pattern, 128);
 
     int i = m - 1;
     while (i <= n - 1) {
@@ -43,7 +43,7 @@ public class P004_HorspoolMatching {
     System.out.println("CASE 1 (Found):");
     System.out.println("Text:    " + text1);
     System.out.println("Pattern: " + pattern1);
-    int pos1 = HorspoolMatching(pattern1, text1);
+    int pos1 = horspoolMatching(pattern1, text1);
     if (pos1 == -1) {
       System.out.println("Pattern not found.\n");
     } else {
@@ -56,7 +56,7 @@ public class P004_HorspoolMatching {
     System.out.println("CASE 2 (Not Found):");
     System.out.println("Text:    " + text2);
     System.out.println("Pattern: " + pattern2);
-    int pos2 = HorspoolMatching(pattern2, text2);
+    int pos2 = horspoolMatching(pattern2, text2);
     if (pos2 == -1) {
       System.out.println("Pattern not found.\n");
     } else {

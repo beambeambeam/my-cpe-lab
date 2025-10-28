@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class P003_ShiftTable {
 
-  public static int[] ShiftTable(String pattern, int alphabetSize) {
+  public static int[] shiftTable(String pattern, int alphabetSize) {
     int m = pattern.length();
     int[] table = new int[alphabetSize];
 
@@ -33,7 +33,7 @@ public class P003_ShiftTable {
     String pattern = sb.toString();
     System.out.println("Random Pattern: " + pattern);
 
-    int[] table = ShiftTable(pattern, alphabetSize);
+    int[] table = shiftTable(pattern, alphabetSize);
 
     System.out.println("Shift Table for 'a'–'z':");
     for (char c = 'a'; c <= 'z'; c++) {

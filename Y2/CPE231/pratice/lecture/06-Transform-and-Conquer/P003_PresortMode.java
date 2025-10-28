@@ -5,26 +5,27 @@ public class P003_PresortMode {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     int n = scanner.nextInt();
-    int[] l = new int[n];
+    int[] A = new int[n];
     for (int i = 0; i < n; i++) {
-      l[i] = scanner.nextInt();
+      A[i] = scanner.nextInt();
     }
 
-    int mode = presortMode(l);
+    int mode = presortMode(A);
     System.out.println(mode);
 
     scanner.close();
   }
 
-  private static int presortMode(int[] l) {
+  private static int presortMode(int[] A) {
+    int n = A.length;
     int modevalue = 0;
-    Arrays.sort(l);
+    Arrays.sort(A);
     int i = 0;
     int modefrequency = 0;
-    while (i <= l.length - 1) {
+    while (i <= n - 1) {
       int runlength = 1;
-      int runvalue = l[i];
-      while (i + runlength <= l.length - 1 && l[i + runlength] == runvalue) {
+      int runvalue = A[i];
+      while (i + runlength <= n - 1 && A[i + runlength] == runvalue) {
         runlength++;
       }
       if (runlength > modefrequency) {

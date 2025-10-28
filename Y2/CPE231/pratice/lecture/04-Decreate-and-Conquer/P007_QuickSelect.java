@@ -25,7 +25,7 @@ public class P007_QuickSelect {
     } else if (s > l + k - 1) {
       return quickselect(A, l, s - 1, k);
     } else {
-      return quickselect(A, s + 1, r, k - (s - l) - 1);
+      return quickselect(A, s + 1, r, k - 1 - s);
     }
   }
 
