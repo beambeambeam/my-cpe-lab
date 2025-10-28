@@ -1,27 +1,27 @@
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Arrays;
 
 public class P002_JohnsonTrotter {
-  private static ArrayList<ArrayList<Integer>> permute(int n) {
-    ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-    ArrayList<Integer> perm = IntStream.rangeClosed(1, n)
-        .boxed()
-        .collect(Collectors.toCollection(ArrayList::new));
+  private static ArrayList<int[]> permute(int n) {
+    ArrayList<int[]> result = new ArrayList<>();
+    int[] perm = new int[n];
+    for (int i = 0; i < n; i++) {
+      perm[i] = i + 1;
+    }
 
     int[] dir = new int[n];
     for (int i = 0; i < n; i++)
       dir[i] = -1;
 
-    result.add(new ArrayList<>(perm));
+    result.add(perm.clone());
 
     while (true) {
       int mobile = -1, mobileIndex = -1;
       for (int i = 0; i < n; i++) {
         int next = i + dir[i];
-        if (next >= 0 && next < n && perm.get(i) > perm.get(next)) {
-          if (mobile == -1 || perm.get(i) > mobile) {
-            mobile = perm.get(i);
+        if (next >= 0 && next < n && perm[i] > perm[next]) {
+          if (mobile == -1 || perm[i] > mobile) {
+            mobile = perm[i];
             mobileIndex = i;
           }
         }
@@ -30,9 +30,9 @@ public class P002_JohnsonTrotter {
         break;
 
       int swapIndex = mobileIndex + dir[mobileIndex];
-      int temp = perm.get(mobileIndex);
-      perm.set(mobileIndex, perm.get(swapIndex));
-      perm.set(swapIndex, temp);
+      int temp = perm[mobileIndex];
+      perm[mobileIndex] = perm[swapIndex];
+      perm[swapIndex] = temp;
 
       int tempDir = dir[mobileIndex];
       dir[mobileIndex] = dir[swapIndex];
@@ -41,18 +41,25 @@ public class P002_JohnsonTrotter {
       mobileIndex = swapIndex;
 
       for (int i = 0; i < n; i++) {
-        if (perm.get(i) > mobile) {
+        if (perm[i] > mobile) {
           dir[i] = -dir[i];
         }
       }
 
-      result.add(new ArrayList<>(perm));
+      result.add(perm.clone());
     }
     return result;
   }
 
   public static void main(String[] args) {
-    System.out.println(permute(3));
-    System.out.println(permute(4));
+    ArrayList<int[]> result3 = permute(3);
+    for (int[] perm : result3) {
+      System.out.println(Arrays.toString(perm));
+    }
+
+    ArrayList<int[]> result4 = permute(4);
+    for (int[] perm : result4) {
+      System.out.println(Arrays.toString(perm));
+    }
   }
 }

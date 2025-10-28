@@ -38,19 +38,39 @@ public class P003_ClosestPair {
     double min = Math.min(leftMin, rightMin);
     System.out.println("  Min from halves: " + min);
 
-    java.util.List<Integer> strip = new java.util.ArrayList<>();
+    // Count points in strip
+    int stripCount = 0;
     for (int i = l; i < r; i++) {
       if (Math.abs(listX[i] - listX[m]) < min) {
-        strip.add(i);
+        stripCount++;
       }
     }
-    strip.sort((i, j) -> Integer.compare(listY[i], listY[j]));
 
-    for (int i = 0; i < strip.size(); i++) {
-      for (int j = i + 1; j < strip.size() && (listY[strip.get(j)] - listY[strip.get(i)]) < min; j++) {
-        double dVal = d(listX[strip.get(i)], listY[strip.get(i)], listX[strip.get(j)], listY[strip.get(j)]);
+    // Create strip array and populate it
+    int[] strip = new int[stripCount];
+    int stripIndex = 0;
+    for (int i = l; i < r; i++) {
+      if (Math.abs(listX[i] - listX[m]) < min) {
+        strip[stripIndex++] = i;
+      }
+    }
+
+    // Sort strip by y-coordinate
+    for (int i = 0; i < stripCount - 1; i++) {
+      for (int j = i + 1; j < stripCount; j++) {
+        if (listY[strip[i]] > listY[strip[j]]) {
+          int temp = strip[i];
+          strip[i] = strip[j];
+          strip[j] = temp;
+        }
+      }
+    }
+
+    for (int i = 0; i < stripCount; i++) {
+      for (int j = i + 1; j < stripCount && (listY[strip[j]] - listY[strip[i]]) < min; j++) {
+        double dVal = d(listX[strip[i]], listY[strip[i]], listX[strip[j]], listY[strip[j]]);
         if (dVal < min) {
-          System.out.println("  Strip closer: " + dVal + " between " + strip.get(i) + " and " + strip.get(j));
+          System.out.println("  Strip closer: " + dVal + " between " + strip[i] + " and " + strip[j]);
           min = dVal;
         }
       }
