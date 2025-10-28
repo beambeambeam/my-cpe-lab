@@ -7,18 +7,12 @@ public class P003_ClosestPair {
   }
 
   private static double closest(int[] listX, int[] listY, int l, int r) {
-    System.out.println(
-        "closest(" + l + ", " + r + ") -> " + java.util.Arrays.toString(java.util.Arrays.copyOfRange(listX, l, r)) + " "
-            + java.util.Arrays.toString(java.util.Arrays.copyOfRange(listY, l, r)));
-
     if (l >= r - 1) {
-      System.out.println("  Base case: only one point, returning MAX_VALUE");
       return Integer.MAX_VALUE;
     }
 
     if (r - l == 2) {
       double dist = d(listX[l], listY[l], listX[l + 1], listY[l + 1]);
-      System.out.println("  Base case: two points, dist=" + dist);
       return dist;
     }
 
@@ -27,16 +21,13 @@ public class P003_ClosestPair {
       double d2 = d(listX[l], listY[l], listX[l + 2], listY[l + 2]);
       double d3 = d(listX[l + 1], listY[l + 1], listX[l + 2], listY[l + 2]);
       double minDist = Math.min(d1, Math.min(d2, d3));
-      System.out.println("  Base case: three points, d1=" + d1 + ", d2=" + d2 + ", d3=" + d3 + ", min=" + minDist);
       return minDist;
     }
 
     int m = (l + r) / 2;
-    System.out.println("  Recursing: left(" + l + ", " + m + ") right(" + m + ", " + r + ")");
     double leftMin = closest(listX, listY, l, m);
     double rightMin = closest(listX, listY, m, r);
     double min = Math.min(leftMin, rightMin);
-    System.out.println("  Min from halves: " + min);
 
     // Count points in strip
     int stripCount = 0;
@@ -70,12 +61,10 @@ public class P003_ClosestPair {
       for (int j = i + 1; j < stripCount && (listY[strip[j]] - listY[strip[i]]) < min; j++) {
         double dVal = d(listX[strip[i]], listY[strip[i]], listX[strip[j]], listY[strip[j]]);
         if (dVal < min) {
-          System.out.println("  Strip closer: " + dVal + " between " + strip[i] + " and " + strip[j]);
           min = dVal;
         }
       }
     }
-    System.out.println("  Returning min distance " + min + " for range [" + l + ", " + r + ")");
     return min;
   }
 

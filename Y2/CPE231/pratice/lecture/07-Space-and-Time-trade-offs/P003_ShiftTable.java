@@ -34,10 +34,6 @@ public class P003_ShiftTable {
     System.out.println("Random Pattern: " + pattern);
 
     int[] table = shiftTable(pattern, alphabetSize);
-
-    System.out.println("Shift Table for 'a'–'z':");
-    for (char c = 'a'; c <= 'z'; c++) {
-      System.out.printf("%c: %d%n", c, table[c]);
-    }
+    System.out.println("Shift table generated for pattern: " + pattern + " (size: " + table.length + ")");
   }
 }
