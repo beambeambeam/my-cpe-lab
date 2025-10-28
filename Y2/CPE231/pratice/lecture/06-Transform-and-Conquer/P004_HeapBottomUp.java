@@ -17,6 +17,9 @@ public class P004_HeapBottomUp {
 
   private static int[] Heapify(int[] H) {
     int n = H.length;
+    // Note: Converting from 1-based pseudocode to 0-based Java array
+    // Pseudocode: i from floor(n/2) downto 1
+    // Java: i from n/2-1 downto 0
 
     for (int i = n / 2 - 1; i >= 0; i--) {
       int k = i;
@@ -24,9 +27,9 @@ public class P004_HeapBottomUp {
       boolean heap = false;
 
       while (!heap && 2 * k + 1 < n) {
-        int j = 2 * k + 1;
+        int j = 2 * k + 1; // Left child in 0-based indexing
         if (j + 1 < n && H[j] < H[j + 1]) {
-          j = j + 1;
+          j = j + 1; // Right child if larger
         }
         if (v >= H[j]) {
           heap = true;

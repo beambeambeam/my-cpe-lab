@@ -1,24 +1,27 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class P002_PresortElementUniquesness {
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     int n = scanner.nextInt();
-    int[] l = new int[n];
+    int[] A = new int[n];
     for (int i = 0; i < n; i++) {
-      l[i] = scanner.nextInt();
+      A[i] = scanner.nextInt();
     }
 
-    boolean test = presort(l);
+    boolean test = presortElementUniqueness(A);
     System.out.println(test);
 
     scanner.close();
-
   }
 
-  private static boolean presort(int[] l) {
-    for (int i = 0; i < l.length - 2; i++) {
-      if (l[i] == l[i + 1]) {
+  private static boolean presortElementUniqueness(int[] A) {
+    int n = A.length;
+    Arrays.sort(A);
+    
+    for (int i = 0; i < n - 1; i++) {
+      if (A[i] == A[i + 1]) {
         return false;
       }
     }

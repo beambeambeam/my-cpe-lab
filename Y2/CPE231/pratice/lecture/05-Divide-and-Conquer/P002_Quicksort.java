@@ -1,37 +1,32 @@
 public class P002_Quicksort {
-  private static void sort(int[] list, int l, int r) {
-    if (r <= l) {
-      return;
+  private static void quicksort(int[] A, int l, int r) {
+    if (l < r) {
+      int s = partition(A, l, r);
+      quicksort(A, l, s - 1);
+      quicksort(A, s + 1, r);
     }
-
-    int pivot = partition(list, l, r);
-    sort(list, l, pivot - 1);
-    sort(list, pivot + 1, r);
   }
 
-  private static int partition(int[] list, int l, int r) {
-    int pivot = list[r];
-    int i = l - 1;
-
-    for (int j = l; j < r; j++) {
-      if (list[j] < pivot) {
-        i++;
-        int temp = list[i];
-        list[i] = list[j];
-        list[j] = temp;
+  private static int partition(int[] A, int l, int r) {
+    int p = A[l];
+    int s = l;
+    for (int i = l + 1; i <= r; i++) {
+      if (A[i] < p) {
+        s++;
+        int temp = A[s];
+        A[s] = A[i];
+        A[i] = temp;
       }
     }
-
-    i++;
-    int temp = list[i];
-    list[i] = list[r];
-    list[r] = temp;
-
-    return i;
+    int temp = A[l];
+    A[l] = A[s];
+    A[s] = temp;
+    return s;
   }
 
   public static void main(String[] args) {
-    int[] list = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    sort(list, 0, list.length - 1);
+    int[] A = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+    quicksort(A, 0, A.length - 1);
+    System.out.println(java.util.Arrays.toString(A));
   }
 }

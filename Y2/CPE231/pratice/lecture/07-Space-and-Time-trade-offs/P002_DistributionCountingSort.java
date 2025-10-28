@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class P002_DistributionCountingSort {
 
-  public static int[] DistributionCountingSort(int[] A, int l, int u) {
+  public static int[] distributionCountingSort(int[] A, int l, int u) {
     int n = A.length;
     int range = u - l + 1;
     int[] D = new int[range];
@@ -36,7 +36,7 @@ public class P002_DistributionCountingSort {
 
     System.out.println("Original array: " + Arrays.toString(A));
 
-    int[] sorted = DistributionCountingSort(A, l, u);
+    int[] sorted = distributionCountingSort(A, l, u);
 
     System.out.println("Sorted array:   " + Arrays.toString(sorted));
   }

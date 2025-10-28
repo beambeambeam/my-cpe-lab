@@ -1,5 +1,5 @@
 public class P006_LemutoPartitioning {
-  private static int partition(int[] A, int l, int r) {
+  private static int lomutoPartition(int[] A, int l, int r) {
     int p = A[l];
     int s = l;
     for (int i = l + 1; i <= r; i++) {
@@ -17,11 +17,11 @@ public class P006_LemutoPartitioning {
   }
 
   public static void main(String[] args) {
-    int[] arr = { 4, 1, 10, 8, 7, 12, 9, 2, 15 };
-    int pivotIndex = partition(arr, 0, arr.length - 1);
+    int[] A = { 4, 1, 10, 8, 7, 12, 9, 2, 15 };
+    int pivotIndex = lomutoPartition(A, 0, A.length - 1);
     System.out.println("Pivot index: " + pivotIndex);
     System.out.print("Partitioned array: ");
-    for (int num : arr) {
+    for (int num : A) {
       System.out.print(num + " ");
     }
     System.out.println();

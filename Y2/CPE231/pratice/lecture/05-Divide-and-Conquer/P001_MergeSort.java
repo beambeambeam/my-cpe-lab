@@ -1,70 +1,57 @@
 public class P001_MergeSort {
-  public static void merge(int[] list, int l, int r, int m) {
-    int n1 = m - l + 1;
-    int n2 = r - m;
+  public static void merge(int[] B, int[] C, int[] A) {
+    int p = B.length;
+    int q = C.length;
+    int i = 0, j = 0, k = 0;
 
-    System.err.println(java.util.Arrays.toString(java.util.Arrays.copyOfRange(list, l, r + 1)));
-
-    int[] L = new int[n1];
-    int[] R = new int[n2];
-
-    for (int i = 0; i < n1; ++i)
-      L[i] = list[l + i];
-    for (int j = 0; j < n2; ++j)
-      R[j] = list[m + 1 + j];
-
-    System.out.println(java.util.Arrays.toString(L));
-    System.out.println(java.util.Arrays.toString(R));
-
-    int i = 0, j = 0;
-
-    int k = l;
-    while (i < n1 && j < n2) {
-      System.err.println("Comparing L[" + i + "]=" + L[i] + " and R[" + j + "]=" + R[j]);
-      if (L[i] <= R[j]) {
-        list[k] = L[i];
-        System.err.println("Placing L[" + i + "]=" + L[i] + " at list[" + k + "]");
+    while (i < p && j < q) {
+      if (B[i] <= C[j]) {
+        A[k] = B[i];
         i++;
       } else {
-        list[k] = R[j];
-        System.err.println("Placing R[" + j + "]=" + R[j] + " at list[" + k + "]");
+        A[k] = C[j];
         j++;
       }
       k++;
     }
 
-    while (i < n1) {
-      list[k] = L[i];
-      System.err.println("Placing remaining L[" + i + "]=" + L[i] + " at list[" + k + "]");
-      i++;
-      k++;
+    if (i == p) {
+      while (j < q) {
+        A[k] = C[j];
+        j++;
+        k++;
+      }
+    } else {
+      while (i < p) {
+        A[k] = B[i];
+        i++;
+        k++;
+      }
     }
-
-    while (j < n2) {
-      list[k] = R[j];
-      System.err.println("Placing remaining R[" + j + "]=" + R[j] + " at list[" + k + "]");
-      j++;
-      k++;
-    }
-
-    System.err.println("\n");
   }
 
-  public static void sort(int[] list, int l, int r) {
-    if (l < r) {
-      int m = (l + r) / 2;
-      sort(list, l, m);
-      sort(list, m + 1, r);
-
-      merge(list, l, r, m);
+  public static void mergeSort(int[] A) {
+    int n = A.length;
+    if (n > 1) {
+      int[] B = new int[n/2];
+      int[] C = new int[(n+1)/2];
+      
+      for (int i = 0; i < n/2; i++) {
+        B[i] = A[i];
+      }
+      for (int i = 0; i < (n+1)/2; i++) {
+        C[i] = A[n/2 + i];
+      }
+      
+      mergeSort(B);
+      mergeSort(C);
+      merge(B, C, A);
     }
-
   }
 
   public static void main(String[] args) {
-    int[] list = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    sort(list, 0, list.length - 1);
-    System.out.println(java.util.Arrays.toString(list));
-
+    int[] A = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+    mergeSort(A);
+    System.out.println(java.util.Arrays.toString(A));
   }
 }
