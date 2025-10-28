@@ -10,7 +10,7 @@ public class P001_ComparisonCountingSort {
     int n = A.length;
     int[] S = new int[n];
     int[] Count = new int[n];
-    
+
     for (int i = 0; i < n; i++) {
       Count[i] = 0;
     }
