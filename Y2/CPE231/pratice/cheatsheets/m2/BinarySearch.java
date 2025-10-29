@@ -56,26 +56,6 @@ class BinarySearch {
     System.out.println();
 
     // --- 3. Custom Object with Comparable (Book by year) ---
-    class Book implements Comparable<Book> {
-      String title;
-      int year;
-
-      Book(String title, int year) {
-        this.title = title;
-        this.year = year;
-      }
-
-      @Override
-      public int compareTo(Book other) {
-        return Integer.compare(this.year, other.year);
-      }
-
-      @Override
-      public String toString() {
-        return title + "(" + year + ")";
-      }
-    }
-
     Book[] books = {
         new Book("Foundation", 1951),
         new Book("Dune", 1965),
@@ -88,21 +68,6 @@ class BinarySearch {
     System.out.println();
 
     // --- 4. Custom Object with Comparator (Person by age) ---
-    class Person {
-      String name;
-      int age;
-
-      Person(String name, int age) {
-        this.name = name;
-        this.age = age;
-      }
-
-      @Override
-      public String toString() {
-        return name + "(" + age + ")";
-      }
-    }
-
     Person[] people = {
         new Person("Bob", 25),
         new Person("Diana", 28),
@@ -128,23 +93,6 @@ class BinarySearch {
     System.out.println();
 
     // --- 6. Multiple Criteria (Student by GPA desc, then ID asc) ---
-    class Student {
-      String name;
-      double gpa;
-      int id;
-
-      Student(String name, double gpa, int id) {
-        this.name = name;
-        this.gpa = gpa;
-        this.id = id;
-      }
-
-      @Override
-      public String toString() {
-        return name + "(GPA:" + gpa + ",ID:" + id + ")";
-      }
-    }
-
     Student[] students = {
         new Student("Leo", 3.7, 1000),
         new Student("Ken", 3.7, 1002),

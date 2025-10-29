@@ -66,62 +66,6 @@ class MergeSort {
   }
 
   public static void main(String[] args) {
-
-    // ======= Nested Classes for Demo =======
-    // Defining these inside main or MergeSort for self-containment as requested
-    class Person {
-      String name;
-      int age;
-
-      Person(String name, int age) {
-        this.name = name;
-        this.age = age;
-      }
-
-      @Override
-      public String toString() {
-        return name + "(" + age + ")";
-      }
-    }
-
-    class Book implements Comparable<Book> {
-      String title;
-      int year;
-
-      Book(String title, int year) {
-        this.title = title;
-        this.year = year;
-      }
-
-      @Override
-      public int compareTo(Book other) {
-        return Integer.compare(this.year, other.year);
-      }
-
-      @Override
-      public String toString() {
-        return title + "(" + year + ")";
-      }
-    }
-
-    class Student {
-      String name;
-      double gpa;
-      int id;
-
-      Student(String name, double gpa, int id) {
-        this.name = name;
-        this.gpa = gpa;
-        this.id = id;
-      }
-
-      @Override
-      public String toString() {
-        return name + "(GPA:" + gpa + ",ID:" + id + ")";
-      }
-    }
-    // ======= End Nested Classes =======
-
     System.out.println("--- MergeSort Demo ---");
 
     // ---- 1. Integer Array (Natural Order) ----
