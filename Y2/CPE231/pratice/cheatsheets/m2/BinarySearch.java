@@ -1,7 +1,6 @@
 import java.util.Comparator;
 import java.util.Arrays;
 
-// ======= Generic BinarySearch Implementation =======
 class BinarySearch {
 
   public static <T extends Comparable<? super T>> int binarySearch(T[] array, T key) {
@@ -23,7 +22,7 @@ class BinarySearch {
       if (cmp < 0) {
         low = mid + 1;
       } else if (cmp > 0) {
-        high = mid - 1; // Corrected this line: was 'high = mid - mid - 1;'
+        high = mid - 1;
       } else {
         return mid;
       }
