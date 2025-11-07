@@ -3,8 +3,8 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCoding;
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCoding.HuffmanTree;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCodingLecture;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCodingLecture.HuffmanTree;
 import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.EgyptianFraction;
 
 public class App {
@@ -20,15 +20,15 @@ public class App {
 
     System.out.println("Original data: " + originalData);
 
-    HuffmanTree tree = HuffmanCoding.buildTree(originalData);
+    HuffmanTree tree = HuffmanCodingLecture.buildTree(originalData);
 
     System.out.println("\nHuffman Code Map:");
     tree.getCodeMap().forEach((character, code) -> System.out.println("  '" + character + "' -> " + code));
 
-    String encoded = HuffmanCoding.encode(originalData, tree);
+    String encoded = HuffmanCodingLecture.encode(originalData, tree);
     System.out.println("\nEncoded: " + encoded);
 
-    String decoded = HuffmanCoding.decode(encoded, tree);
+    String decoded = HuffmanCodingLecture.decode(encoded, tree);
     System.out.println("Decoded: " + decoded);
 
     System.out.println("\nOriginal length: " + originalData.length() * 8 + " bits");
@@ -39,6 +39,5 @@ public class App {
 
   private static void exampleEgyptainFraction() {
     EgyptianFraction.printFraction(1, 2);
-
   }
 }
