@@ -9,10 +9,10 @@ import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.EgyptianFraction;
 
 public class App {
   public static void main(String[] args) {
-    exampleHuffmanCoding();
+    // exampleHuffmanCoding();
     // exampleEgyptainFraction();
-    // HuffmanCoding.Scanner();
-    // EgyptianFraction.Scanner();
+    // HuffmanCodingLecture.Scanner();
+    EgyptianFraction.Scanner();
   }
 
   private static void exampleHuffmanCoding() {
