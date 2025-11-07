@@ -2,7 +2,7 @@ package th.ac.kmutt.cpe.algorithm.supawit.lab.lab09;
 
 import java.util.*;
 
-public class HuffmanCoding {
+public class HuffmanCodingLecture {
 
   public static class HuffmanNode {
     char symbol;
