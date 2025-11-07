@@ -80,6 +80,23 @@ public class HuffmanCodingLecture {
       return new HuffmanTree(root);
     }
 
+    if (frequencyMap.size() == 2) {
+      List<Map.Entry<Character, Integer>> entries = new ArrayList<>(frequencyMap.entrySet());
+      entries.sort((a, b) -> {
+        if (a.getValue() != b.getValue()) {
+          return Integer.compare(a.getValue(), b.getValue());
+        }
+        return Character.compare(a.getKey(), b.getKey());
+      });
+
+      HuffmanNode lowerFreq = new HuffmanNode(entries.get(0).getKey(), entries.get(0).getValue());
+      HuffmanNode higherFreq = new HuffmanNode(entries.get(1).getKey(), entries.get(1).getValue());
+
+      HuffmanNode intermediate = new HuffmanNode(higherFreq.frequency, null, higherFreq);
+      HuffmanNode root = new HuffmanNode(lowerFreq.frequency + higherFreq.frequency, intermediate, lowerFreq);
+      return new HuffmanTree(root);
+    }
+
     PriorityQueue<HuffmanNode> pq = new PriorityQueue<>((a, b) -> {
       if (a.frequency != b.frequency) {
         return Integer.compare(a.frequency, b.frequency);
