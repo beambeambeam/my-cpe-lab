@@ -4,189 +4,215 @@ import java.util.*;
 
 public class HuffmanCoding {
 
-  public static class HuffmanNode {
-    char symbol;
-    int frequency;
-    HuffmanNode left;
-    HuffmanNode right;
+    public static class HuffmanNode {
 
-    public HuffmanNode(char symbol, int frequency) {
-      this.symbol = symbol;
-      this.frequency = frequency;
-      this.left = null;
-      this.right = null;
-    }
+        char symbol;
+        int frequency;
+        HuffmanNode left;
+        HuffmanNode right;
 
-    public HuffmanNode(int frequency, HuffmanNode left, HuffmanNode right) {
-      this.symbol = '\0';
-      this.frequency = frequency;
-      this.left = left;
-      this.right = right;
-    }
-
-    public boolean isLeaf() {
-      return left == null && right == null;
-    }
-  }
-
-  public static class HuffmanTree {
-    private HuffmanNode root;
-    private Map<Character, String> codeMap;
-
-    public HuffmanTree(HuffmanNode root) {
-      this.root = root;
-      this.codeMap = new HashMap<>();
-      buildCodeMap(root, "");
-    }
-
-    public HuffmanNode getRoot() {
-      return root;
-    }
-
-    public Map<Character, String> getCodeMap() {
-      return codeMap;
-    }
-
-    private void buildCodeMap(HuffmanNode node, String code) {
-      if (node == null) {
-        return;
-      }
-
-      if (node.isLeaf()) {
-        if (code.isEmpty()) {
-          code = "0";
+        public HuffmanNode(char symbol, int frequency) {
+            this.symbol = symbol;
+            this.frequency = frequency;
+            this.left = null;
+            this.right = null;
         }
-        codeMap.put(node.symbol, code);
-      } else {
-        buildCodeMap(node.left, code + "0");
-        buildCodeMap(node.right, code + "1");
-      }
-    }
-  }
 
-  public static HuffmanTree buildTree(String data) {
-    if (data == null || data.isEmpty()) {
-      throw new IllegalArgumentException("Input data cannot be null or empty");
-    }
+        public HuffmanNode(int frequency, HuffmanNode left, HuffmanNode right) {
+            this.symbol = '\0';
+            this.frequency = frequency;
+            this.left = left;
+            this.right = right;
+        }
 
-    Map<Character, Integer> frequencyMap = new HashMap<>();
-    for (char c : data.toCharArray()) {
-      frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+        public boolean isLeaf() {
+            return left == null && right == null;
+        }
     }
 
-    if (frequencyMap.size() == 1) {
-      char onlyChar = frequencyMap.keySet().iterator().next();
-      HuffmanNode root = new HuffmanNode(onlyChar, frequencyMap.get(onlyChar));
-      return new HuffmanTree(root);
+    public static class HuffmanTree {
+
+        private HuffmanNode root;
+        private Map<Character, String> codeMap;
+
+        public HuffmanTree(HuffmanNode root) {
+            this.root = root;
+            this.codeMap = new HashMap<>();
+            buildCodeMap(root, "");
+        }
+
+        public HuffmanNode getRoot() {
+            return root;
+        }
+
+        public Map<Character, String> getCodeMap() {
+            return codeMap;
+        }
+
+        private void buildCodeMap(HuffmanNode node, String code) {
+            if (node == null) {
+                return;
+            }
+
+            if (node.isLeaf()) {
+                if (code.isEmpty()) {
+                    code = "0";
+                }
+                codeMap.put(node.symbol, code);
+            } else {
+                buildCodeMap(node.left, code + "0");
+                buildCodeMap(node.right, code + "1");
+            }
+        }
     }
 
-    PriorityQueue<HuffmanNode> pq = new PriorityQueue<>((a, b) -> {
-      if (a.frequency != b.frequency) {
-        return Integer.compare(a.frequency, b.frequency);
-      }
-      return Character.compare(a.symbol, b.symbol);
-    });
+    public static HuffmanTree buildTree(String data) {
+        if (data == null || data.isEmpty()) {
+            throw new IllegalArgumentException(
+                "Input data cannot be null or empty"
+            );
+        }
 
-    for (Map.Entry<Character, Integer> entry : frequencyMap.entrySet()) {
-      pq.offer(new HuffmanNode(entry.getKey(), entry.getValue()));
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        for (char c : data.toCharArray()) {
+            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+        }
+
+        if (frequencyMap.size() == 1) {
+            char onlyChar = frequencyMap.keySet().iterator().next();
+            HuffmanNode root = new HuffmanNode(
+                onlyChar,
+                frequencyMap.get(onlyChar)
+            );
+            return new HuffmanTree(root);
+        }
+
+        PriorityQueue<HuffmanNode> pq = new PriorityQueue<>((a, b) -> {
+            if (a.frequency != b.frequency) {
+                return Integer.compare(a.frequency, b.frequency);
+            }
+            return Character.compare(a.symbol, b.symbol);
+        });
+
+        for (Map.Entry<Character, Integer> entry : frequencyMap.entrySet()) {
+            pq.offer(new HuffmanNode(entry.getKey(), entry.getValue()));
+        }
+
+        while (pq.size() > 1) {
+            HuffmanNode left = pq.poll();
+            HuffmanNode right = pq.poll();
+
+            int combinedFreq = left.frequency + right.frequency;
+            HuffmanNode parent = new HuffmanNode(combinedFreq, left, right);
+            pq.offer(parent);
+        }
+
+        HuffmanNode root = pq.poll();
+        return new HuffmanTree(root);
     }
 
-    while (pq.size() > 1) {
-      HuffmanNode left = pq.poll();
-      HuffmanNode right = pq.poll();
+    public static String encode(String data, HuffmanTree tree) {
+        if (data == null || data.isEmpty()) {
+            return "";
+        }
 
-      int combinedFreq = left.frequency + right.frequency;
-      HuffmanNode parent = new HuffmanNode(combinedFreq, left, right);
-      pq.offer(parent);
+        Map<Character, String> codeMap = tree.getCodeMap();
+        StringBuilder encoded = new StringBuilder();
+
+        for (char c : data.toCharArray()) {
+            String code = codeMap.get(c);
+            if (code == null) {
+                throw new IllegalArgumentException(
+                    "Character '" + c + "' not found in Huffman tree"
+                );
+            }
+            encoded.append(code);
+        }
+
+        return encoded.toString();
     }
 
-    HuffmanNode root = pq.poll();
-    return new HuffmanTree(root);
-  }
+    public static String decode(String encodedData, HuffmanTree tree) {
+        if (encodedData == null || encodedData.isEmpty()) {
+            return "";
+        }
 
-  public static String encode(String data, HuffmanTree tree) {
-    if (data == null || data.isEmpty()) {
-      return "";
+        HuffmanNode root = tree.getRoot();
+        if (root == null) {
+            return "";
+        }
+
+        if (root.isLeaf()) {
+            return String.valueOf(root.symbol).repeat(encodedData.length());
+        }
+
+        StringBuilder decoded = new StringBuilder();
+        HuffmanNode current = root;
+
+        for (char bit : encodedData.toCharArray()) {
+            if (bit == '0') {
+                current = current.left;
+            } else if (bit == '1') {
+                current = current.right;
+            } else {
+                throw new IllegalArgumentException(
+                    "Invalid bit character: " + bit
+                );
+            }
+
+            if (current == null) {
+                throw new IllegalArgumentException(
+                    "Invalid encoded data: path leads to null node"
+                );
+            }
+
+            if (current.isLeaf()) {
+                decoded.append(current.symbol);
+                current = root;
+            }
+        }
+
+        if (current != root) {
+            throw new IllegalArgumentException(
+                "Invalid encoded data: incomplete path at end"
+            );
+        }
+
+        return decoded.toString();
     }
 
-    Map<Character, String> codeMap = tree.getCodeMap();
-    StringBuilder encoded = new StringBuilder();
+    public static void Scanner() {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
 
-    for (char c : data.toCharArray()) {
-      String code = codeMap.get(c);
-      if (code == null) {
-        throw new IllegalArgumentException("Character '" + c + "' not found in Huffman tree");
-      }
-      encoded.append(code);
+        HuffmanTree tree = buildTree(input);
+
+        System.out.println("\nHuffman Code Map:");
+        tree
+            .getCodeMap()
+            .forEach((character, code) ->
+                System.out.println("  '" + character + "' -> " + code)
+            );
+
+        String encoded = encode(input, tree);
+        System.out.println("\nEncoded: " + encoded);
+
+        String decoded = decode(encoded, tree);
+        System.out.println("Decoded: " + decoded);
+
+        System.out.println(
+            "\nOriginal length: " + input.length() * 8 + " bits"
+        );
+        System.out.println("Encoded length: " + encoded.length() + " bits");
+        System.out.println(
+            "Compression ratio: " +
+                String.format(
+                    "%.2f%%",
+                    (1.0 - (double) encoded.length() / (input.length() * 8)) *
+                        100
+                )
+        );
+
+        scanner.close();
     }
-
-    return encoded.toString();
-  }
-
-  public static String decode(String encodedData, HuffmanTree tree) {
-    if (encodedData == null || encodedData.isEmpty()) {
-      return "";
-    }
-
-    HuffmanNode root = tree.getRoot();
-    if (root == null) {
-      return "";
-    }
-
-    if (root.isLeaf()) {
-      return String.valueOf(root.symbol).repeat(encodedData.length());
-    }
-
-    StringBuilder decoded = new StringBuilder();
-    HuffmanNode current = root;
-
-    for (char bit : encodedData.toCharArray()) {
-      if (bit == '0') {
-        current = current.left;
-      } else if (bit == '1') {
-        current = current.right;
-      } else {
-        throw new IllegalArgumentException("Invalid bit character: " + bit);
-      }
-
-      if (current == null) {
-        throw new IllegalArgumentException("Invalid encoded data: path leads to null node");
-      }
-
-      if (current.isLeaf()) {
-        decoded.append(current.symbol);
-        current = root;
-      }
-    }
-
-    if (current != root) {
-      throw new IllegalArgumentException("Invalid encoded data: incomplete path at end");
-    }
-
-    return decoded.toString();
-  }
-
-  public static void Scanner() {
-    Scanner scanner = new Scanner(System.in);
-    String input = scanner.nextLine();
-
-    HuffmanTree tree = buildTree(input);
-
-    System.out.println("\nHuffman Code Map:");
-    tree.getCodeMap().forEach((character, code) -> System.out.println("  '" + character + "' -> " + code));
-
-    String encoded = encode(input, tree);
-    System.out.println("\nEncoded: " + encoded);
-
-    String decoded = decode(encoded, tree);
-    System.out.println("Decoded: " + decoded);
-
-    System.out.println("\nOriginal length: " + input.length() * 8 + " bits");
-    System.out.println("Encoded length: " + encoded.length() + " bits");
-    System.out.println("Compression ratio: " +
-        String.format("%.2f%%", (1.0 - (double) encoded.length() / (input.length() * 8)) * 100));
-
-    scanner.close();
-
-  }
 }

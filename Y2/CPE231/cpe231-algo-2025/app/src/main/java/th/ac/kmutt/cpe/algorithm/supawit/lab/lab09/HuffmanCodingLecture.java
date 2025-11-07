@@ -189,6 +189,9 @@ public class HuffmanCodingLecture {
 
     HuffmanTree tree = buildTree(input);
 
+    System.out.println("\nIncomeing:");
+    System.out.println(input);
+
     System.out.println("\nHuffman Code Map:");
     tree.getCodeMap().forEach((character, code) -> System.out.println("  '" + character + "' -> " + code));
 
