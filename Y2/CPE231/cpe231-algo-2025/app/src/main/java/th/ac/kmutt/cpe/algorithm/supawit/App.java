@@ -3,14 +3,42 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.Z;
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.TheSpiritMerchant;
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab08.Solution.EOD;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCoding;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCoding.HuffmanTree;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.EgyptianFraction;
 
 public class App {
   public static void main(String[] args) {
-    Z.main(args);
-    // TheSpiritMerchant.main(args);
-    // EOD.main(args);
+    exampleHuffmanCoding();
+    // exampleEgyptainFraction();
+    // HuffmanCoding.Scanner();
+    // EgyptianFraction.Scanner();
+  }
+
+  private static void exampleHuffmanCoding() {
+    String originalData = "DAD";
+
+    System.out.println("Original data: " + originalData);
+
+    HuffmanTree tree = HuffmanCoding.buildTree(originalData);
+
+    System.out.println("\nHuffman Code Map:");
+    tree.getCodeMap().forEach((character, code) -> System.out.println("  '" + character + "' -> " + code));
+
+    String encoded = HuffmanCoding.encode(originalData, tree);
+    System.out.println("\nEncoded: " + encoded);
+
+    String decoded = HuffmanCoding.decode(encoded, tree);
+    System.out.println("Decoded: " + decoded);
+
+    System.out.println("\nOriginal length: " + originalData.length() * 8 + " bits");
+    System.out.println("Encoded length: " + encoded.length() + " bits");
+    System.out.println("Compression ratio: " +
+        String.format("%.2f%%", (1.0 - (double) encoded.length() / (originalData.length() * 8)) * 100));
+  }
+
+  private static void exampleEgyptainFraction() {
+    EgyptianFraction.printFraction(1, 2);
+
   }
 }
