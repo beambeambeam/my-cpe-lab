@@ -2,26 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class P001_Prim {
-  static class Edge {
-    int from;
-    int to;
-    int weight;
-
-    Edge(int from, int to, int weight) {
-      this.from = from;
-      this.to = to;
-      this.weight = weight;
-    }
-
-    @Override
-    public String toString() {
-      return "(" + from + ", " + to + ", " + weight + ")";
-    }
-  }
-
-  public static List<Edge> prim(int[][] graph) {
+  public static List<GraphUtils.Edge> prim(int[][] graph) {
     int n = graph.length;
-    List<Edge> E_T = new ArrayList<>();
+    List<GraphUtils.Edge> E_T = new ArrayList<>();
     boolean[] V_T = new boolean[n];
     V_T[0] = true;
 
@@ -44,7 +27,7 @@ public class P001_Prim {
 
       if (u_star != -1) {
         V_T[u_star] = true;
-        E_T.add(new Edge(v_star, u_star, minWeight));
+        E_T.add(new GraphUtils.Edge(v_star, u_star, minWeight));
       }
     }
 
@@ -65,11 +48,11 @@ public class P001_Prim {
       }
     }
 
-    List<Edge> mst = prim(graph);
+    List<GraphUtils.Edge> mst = prim(graph);
 
     System.out.println("Minimum Spanning Tree edges:");
     int totalWeight = 0;
-    for (Edge e : mst) {
+    for (GraphUtils.Edge e : mst) {
       System.out.println(e);
       totalWeight += e.weight;
     }
