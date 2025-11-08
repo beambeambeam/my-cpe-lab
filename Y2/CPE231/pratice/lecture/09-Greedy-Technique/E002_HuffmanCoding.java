@@ -3,64 +3,34 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 public class E002_HuffmanCoding {
-  static class HuffmanNode implements Comparable<HuffmanNode> {
-    char character;
-    int frequency;
-    HuffmanNode left;
-    HuffmanNode right;
-
-    HuffmanNode(char character, int frequency) {
-      this.character = character;
-      this.frequency = frequency;
-      this.left = null;
-      this.right = null;
-    }
-
-    HuffmanNode(int frequency, HuffmanNode left, HuffmanNode right) {
-      this.character = '\0';
-      this.frequency = frequency;
-      this.left = left;
-      this.right = right;
-    }
-
-    boolean isLeaf() {
-      return left == null && right == null;
-    }
-
-    @Override
-    public int compareTo(HuffmanNode other) {
-      return Integer.compare(this.frequency, other.frequency);
-    }
-  }
-
-  public static HuffmanNode buildHuffmanTree(Map<Character, Integer> frequencies) {
-    PriorityQueue<HuffmanNode> pq = new PriorityQueue<>();
+  public static GraphUtils.WeightedBinaryTreeNode<Character> buildHuffmanTree(Map<Character, Integer> frequencies) {
+    PriorityQueue<GraphUtils.WeightedBinaryTreeNode<Character>> pq = new PriorityQueue<>();
 
     for (Map.Entry<Character, Integer> entry : frequencies.entrySet()) {
-      pq.offer(new HuffmanNode(entry.getKey(), entry.getValue()));
+      pq.offer(new GraphUtils.WeightedBinaryTreeNode<>(entry.getKey(), entry.getValue()));
     }
 
     while (pq.size() > 1) {
-      HuffmanNode left = pq.poll();
-      HuffmanNode right = pq.poll();
-      int combinedFreq = left.frequency + right.frequency;
-      HuffmanNode parent = new HuffmanNode(combinedFreq, left, right);
+      GraphUtils.WeightedBinaryTreeNode<Character> left = pq.poll();
+      GraphUtils.WeightedBinaryTreeNode<Character> right = pq.poll();
+      int combinedFreq = left.weight + right.weight;
+      GraphUtils.WeightedBinaryTreeNode<Character> parent = new GraphUtils.WeightedBinaryTreeNode<>(combinedFreq, left, right);
       pq.offer(parent);
     }
 
     return pq.poll();
   }
 
-  public static void generateCodes(HuffmanNode root, String code, Map<Character, String> codes) {
+  public static void generateCodes(GraphUtils.WeightedBinaryTreeNode<Character> root, String code, Map<Character, String> codes) {
     if (root == null) {
       return;
     }
 
     if (root.isLeaf()) {
       if (code.isEmpty()) {
-        codes.put(root.character, "0");
+        codes.put(root.data, "0");
       } else {
-        codes.put(root.character, code);
+        codes.put(root.data, code);
       }
       return;
     }
@@ -70,7 +40,7 @@ public class E002_HuffmanCoding {
   }
 
   public static Map<Character, String> getHuffmanCodes(Map<Character, Integer> frequencies) {
-    HuffmanNode root = buildHuffmanTree(frequencies);
+    GraphUtils.WeightedBinaryTreeNode<Character> root = buildHuffmanTree(frequencies);
     Map<Character, String> codes = new HashMap<>();
     generateCodes(root, "", codes);
     return codes;
@@ -84,13 +54,13 @@ public class E002_HuffmanCoding {
     return encoded.toString();
   }
 
-  public static String decode(String encoded, HuffmanNode root) {
+  public static String decode(String encoded, GraphUtils.WeightedBinaryTreeNode<Character> root) {
     if (root == null) {
       return "";
     }
 
     StringBuilder decoded = new StringBuilder();
-    HuffmanNode current = root;
+    GraphUtils.WeightedBinaryTreeNode<Character> current = root;
 
     for (char bit : encoded.toCharArray()) {
       if (bit == '0') {
@@ -100,7 +70,7 @@ public class E002_HuffmanCoding {
       }
 
       if (current.isLeaf()) {
-        decoded.append(current.character);
+        decoded.append(current.data);
         current = root;
       }
     }
@@ -138,7 +108,7 @@ public class E002_HuffmanCoding {
     System.out.println("Compression ratio: " + String.format("%.2f%%",
         (1.0 - (double) encoded.length() / (text.length() * 8)) * 100));
 
-    HuffmanNode root = buildHuffmanTree(frequencies);
+    GraphUtils.WeightedBinaryTreeNode<Character> root = buildHuffmanTree(frequencies);
     String decoded = decode(encoded, root);
     System.out.println("Decoded text: " + decoded);
 
