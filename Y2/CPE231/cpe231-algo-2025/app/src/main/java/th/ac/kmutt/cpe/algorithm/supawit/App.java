@@ -3,41 +3,11 @@
  */
 package th.ac.kmutt.cpe.algorithm.supawit;
 
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCodingLecture;
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.HuffmanCodingLecture.HuffmanTree;
-import th.ac.kmutt.cpe.algorithm.supawit.lab.lab09.EgyptianFraction;
+import th.ac.kmutt.cpe.algorithm.supawit.lab.lab10.Solution;
 
 public class App {
-  public static void main(String[] args) {
-    // exampleHuffmanCoding();
-    // exampleEgyptainFraction();
-    // HuffmanCodingLecture.Scanner();
-    EgyptianFraction.Scanner();
-  }
 
-  private static void exampleHuffmanCoding() {
-    String originalData = "DAD";
-
-    System.out.println("Original data: " + originalData);
-
-    HuffmanTree tree = HuffmanCodingLecture.buildTree(originalData);
-
-    System.out.println("\nHuffman Code Map:");
-    tree.getCodeMap().forEach((character, code) -> System.out.println("  '" + character + "' -> " + code));
-
-    String encoded = HuffmanCodingLecture.encode(originalData, tree);
-    System.out.println("\nEncoded: " + encoded);
-
-    String decoded = HuffmanCodingLecture.decode(encoded, tree);
-    System.out.println("Decoded: " + decoded);
-
-    System.out.println("\nOriginal length: " + originalData.length() * 8 + " bits");
-    System.out.println("Encoded length: " + encoded.length() + " bits");
-    System.out.println("Compression ratio: " +
-        String.format("%.2f%%", (1.0 - (double) encoded.length() / (originalData.length() * 8)) * 100));
-  }
-
-  private static void exampleEgyptainFraction() {
-    EgyptianFraction.printFraction(1, 2);
-  }
+    public static void main(String[] args) {
+        Solution.main(args);
+    }
 }
