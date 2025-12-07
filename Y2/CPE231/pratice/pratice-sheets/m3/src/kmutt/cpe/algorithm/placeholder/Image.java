@@ -12,7 +12,6 @@ public class Image {
   private int width;
   private int[][] pixels;
 
-  // Create image object by importing the .png file
   public Image(String filePath) {
     try {
       File file = new File(filePath);
@@ -34,14 +33,12 @@ public class Image {
     }
   }
 
-  // Create an empty Image (given height and width)
   public Image(int height, int width) {
     this.height = height;
     this.width = width;
     this.pixels = new int[height][width];
   }
 
-  // Export the image object into .png file according to the file name.
   public void export(String fileName) {
     BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);
     WritableRaster raster = img.getRaster();
@@ -53,7 +50,7 @@ public class Image {
     }
 
     try {
-      ImageIO.write(img, "png", new File("src/kmutt/cpe/algorithm/placeholder/" + fileName));
+      ImageIO.write(img, "png", new File("kmutt/cpe/algorithm/placeholder/" + fileName));
     } catch (IOException e) {
       e.printStackTrace();
     }

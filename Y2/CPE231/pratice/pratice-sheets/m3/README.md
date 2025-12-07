@@ -10,10 +10,27 @@ pratice-sheets/m3/
         ├── image.png
         ├── P00_ImageProcessing.java
         ├── P01_Wee.java
-        ├── P02_GrilledGoose.java
+        ├── P02_GrilledGooseDPTabular.java      (Bottom-up DP)
+        ├── P02_GrilledGooseDPMemoization.java  (Top-down DP)
         ├── P03_Salesman.java
+        ├── P03_SalesmanDPTabular.java          (Bottom-up DP - Held-Karp)
+        ├── P03_SalesmanDPMemoization.java      (Top-down DP - Held-Karp)
         └── P04_DragQueen.java
 ```
+
+## Algorithm Patterns Summary
+
+| File                                 | Pattern                    | Problem Type                     |
+| ------------------------------------ | -------------------------- | -------------------------------- |
+| `Image.java`                         | Utility class              | -                                |
+| `P00_ImageProcessing.java`           | Iteration                  | Image manipulation               |
+| `P01_Wee.java`                       | Greedy                     | Number partitioning              |
+| `P02_GrilledGooseDPMemoization.java` | DP (Memoization)           | Unbounded Knapsack / Coin Change |
+| `P02_GrilledGooseDPTabular.java`     | DP (Tabulation)            | Same as above                    |
+| `P03_Salesman.java`                  | Brute Force / Backtracking | TSP                              |
+| `P03_SalesmanDPMemoization.java`     | Bitmask DP (Memoization)   | TSP (Held-Karp)                  |
+| `P03_SalesmanDPTabular.java`         | Bitmask DP (Tabulation)    | TSP (Held-Karp)                  |
+| `P04_DragQueen.java`                 | Greedy + Max-Heap          | Reorganize String                |
 
 ## How to Compile and Run
 
@@ -55,9 +72,20 @@ Output:
 
 ### P02 - Grilled Goose (Largest Unreachable Sum)
 
+Both variants solve the same problem with O(maxSum \* n) time complexity.
+
+**Tabular (Bottom-up):**
+
 ```bash
-javac kmutt/cpe/algorithm/placeholder/P02_GrilledGoose.java
-java kmutt.cpe.algorithm.placeholder.P02_GrilledGoose
+javac kmutt/cpe/algorithm/placeholder/P02_GrilledGooseDPTabular.java
+java kmutt.cpe.algorithm.placeholder.P02_GrilledGooseDPTabular
+```
+
+**Memoization (Top-down):**
+
+```bash
+javac kmutt/cpe/algorithm/placeholder/P02_GrilledGooseDPMemoization.java
+java kmutt.cpe.algorithm.placeholder.P02_GrilledGooseDPMemoization
 ```
 
 Input:
@@ -104,6 +132,24 @@ Output:
 ```
 THA UK UAE DEN SWE USA THA
 44
+```
+
+### P03 - Salesman DP Variants (Held-Karp Algorithm)
+
+Both variants use bitmask DP with O(n^2 \* 2^n) time complexity, much better than brute force O(n!).
+
+**Tabular (Bottom-up):**
+
+```bash
+javac kmutt/cpe/algorithm/placeholder/P03_SalesmanDPTabular.java
+java kmutt.cpe.algorithm.placeholder.P03_SalesmanDPTabular
+```
+
+**Memoization (Top-down):**
+
+```bash
+javac kmutt/cpe/algorithm/placeholder/P03_SalesmanDPMemoization.java
+java kmutt.cpe.algorithm.placeholder.P03_SalesmanDPMemoization
 ```
 
 ### P04 - DragQueen (Rearrange Adjacent Duplicates)
