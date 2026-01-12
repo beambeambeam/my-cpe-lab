@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
@@ -13,10 +13,10 @@ services:
       - ./:/var/www/html
       - web_data:/var/www/html/uploads
     depends_on:
-      db:
+      db_default:
         condition: service_healthy
     environment:
-      - DB_HOST=${DB_HOST:-db}
+      - DB_HOST=${DB_HOST:-db_default}
       - DB_USER=${DB_USER:-root}
       - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE}
@@ -29,23 +29,23 @@ services:
       retries: 3
       start_period: 40s
 
-  db:
+  db_default:
     image: mysql:8.0
-    container_name: cpe241_mysql
+    container_name: cpe241_mysql_db_default
     platform: linux/arm64
     restart: unless-stopped
     ports:
-      - "${MYSQL_PORT:-3306}:3306"
+      - "${DB_DEFAULT_PORT:-3306}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${DB_DEFAULT_DATABASE:-db_default}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_CHARACTER_SET_SERVER: utf8mb4
       MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./mysql-init:/docker-entrypoint-initdb.d
+      - mysql_db_default_data:/var/lib/mysql
+      - ./mysql-init/db_default:/docker-entrypoint-initdb.d
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - cpe241_network
@@ -64,22 +64,22 @@ services:
     ports:
       - "${PHPMYADMIN_PORT:-8081}:80"
     environment:
-      PMA_HOST: db
+      PMA_HOST: db_default
       PMA_PORT: 3306
       PMA_USER: ${MYSQL_USER:-root}
       PMA_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      PMA_ARBITRARY: 0
+      PMA_ARBITRARY: 1
       UPLOAD_LIMIT: 64M
       MAX_EXECUTION_TIME: 300
     depends_on:
-      db:
+      db_default:
         condition: service_healthy
     networks:
       - cpe241_network
 
 volumes:
-  mysql_data:
+  mysql_db_default_data:
     driver: local
   web_data:
     driver: local
