@@ -8,7 +8,6 @@ Usage: python3 delete-db.py [db_name]
 
 import sys
 import re
-import os
 from pathlib import Path
 
 
@@ -40,7 +39,9 @@ def list_databases():
 def remove_database(db_name):
     """Remove a database service by deleting its compose file"""
     if db_name == "db_default":
-        print("Error: Cannot delete db_default (primary database in docker-compose.yml)")
+        print(
+            "Error: Cannot delete db_default (primary database in docker-compose.yml)"
+        )
         return False
 
     compose_file = Path(f"docker-compose.{db_name}.yml")
@@ -53,20 +54,29 @@ def remove_database(db_name):
 
     # Stop and remove container first (if it exists)
     import subprocess
+
     container_name = f"cpe241_mysql_{db_name}"
 
     # Check if container exists and is running
     result = subprocess.run(
-        ["docker", "ps", "-a", "--filter", f"name={container_name}", "--format", "{{.Names}}"],
+        [
+            "docker",
+            "ps",
+            "-a",
+            "--filter",
+            f"name={container_name}",
+            "--format",
+            "{{.Names}}",
+        ],
         capture_output=True,
-        text=True
+        text=True,
     )
 
     if result.stdout.strip():
         print(f"Stopping and removing container: {container_name}")
         subprocess.run(["docker", "stop", container_name], capture_output=True)
         subprocess.run(["docker", "rm", container_name], capture_output=True)
-        print(f"✓ Container stopped and removed")
+        print("✓ Container stopped and removed")
 
     # Remove compose file
     compose_file.unlink()
@@ -78,6 +88,7 @@ def remove_database(db_name):
     init_dir = Path(f"mysql-init/{db_name}")
     if init_dir.exists():
         import shutil
+
         shutil.rmtree(init_dir)
         print(f"✓ Removed mysql-init/{db_name}/ directory")
 
@@ -95,7 +106,7 @@ def remove_database(db_name):
             f.write(env_content)
 
     print(f"✓ Database service '{db_name}' removed")
-    print(f"\nOptional cleanup:")
+    print("\nOptional cleanup:")
     print(f"  Remove volume: docker volume rm cpe241_mysql_{db_name}_data")
 
     return True
