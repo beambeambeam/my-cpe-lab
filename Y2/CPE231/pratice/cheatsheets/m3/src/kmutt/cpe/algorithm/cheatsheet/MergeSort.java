@@ -1,3 +1,5 @@
+package kmutt.cpe.algorithm.cheatsheet;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -5,7 +7,7 @@ import java.util.Comparator;
 // Stable sort, always O(n log n) time, O(n) space for temp array
 // T(n) = 2T(n/2) + O(n) -> O(n log n)
 
-class MergeSort {
+public class MergeSort {
 
   public static <T> void sort(T[] A, Comparator<? super T> cmp) {
     if (A.length <= 1)
@@ -64,3 +66,8 @@ class MergeSort {
       System.out.println(p[0] + " " + p[1]);
   }
 }
+
+// Usage from another file:
+// import kmutt.cpe.algorithm.cheatsheet.MergeSort;
+// MergeSort.sort(array); // natural order (Comparable)
+// MergeSort.sort(array, Comparator.reverseOrder()); // custom comparator

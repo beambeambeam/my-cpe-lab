@@ -1,3 +1,8 @@
+package kmutt.cpe.algorithm.cheatsheet;
+
+// javac kmutt\cpe\algorithm\cheatsheet\Knapsack.java
+// java kmutt.cpe.algorithm.cheatsheet.Knapsack
+
 import java.util.Arrays;
 
 // 0/1 Knapsack: n items (weight w[], value v[]), capacity W -> max value, each item taken at most once
@@ -6,7 +11,7 @@ import java.util.Arrays;
 // F(i,j) = max(F(i-1,j), v[i]+F(i-1,j-w[i]))   otherwise (skip vs take)
 // Base: F(0,j)=0, F(i,0)=0 | O(nW) time, O(nW) space
 
-class Knapsack {
+public class Knapsack {
 
   public static int solve(int[] weights, int[] values, int capacity) {
     int n = weights.length;
