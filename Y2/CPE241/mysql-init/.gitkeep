@@ -1,0 +1,2 @@
+# Place SQL initialization scripts in db1/, db2/, or db3/ directories
+# Files will be executed in alphabetical order on first startup
