@@ -1,34 +1,6 @@
 version: "3.8"
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: cpe241_web
-    restart: unless-stopped
-    ports:
-      - "${WEB_PORT:-8080}:80"
-    volumes:
-      - ./:/var/www/html
-      - web_data:/var/www/html/uploads
-    depends_on:
-      db_default:
-        condition: service_healthy
-    environment:
-      - DB_HOST=${DB_HOST:-db_default}
-      - DB_USER=${DB_USER:-root}
-      - DB_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - DB_NAME=${MYSQL_DATABASE}
-    networks:
-      - cpe241_network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   db_default:
     image: mysql:8.0
     container_name: cpe241_mysql_db_default
@@ -80,8 +52,6 @@ services:
 
 volumes:
   mysql_db_default_data:
-    driver: local
-  web_data:
     driver: local
 
 networks:

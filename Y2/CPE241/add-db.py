@@ -9,7 +9,6 @@ Example: python3 add-db.py db_test_1 3307
 
 import sys
 import re
-import os
 from pathlib import Path
 
 
@@ -142,15 +141,18 @@ networks:
 
     # Update phpMyAdmin configuration
     import subprocess
+
     update_script = Path("update-phpmyadmin.py")
     if update_script.exists():
         subprocess.run(["python3", str(update_script)], capture_output=True)
-        print(f"✓ phpMyAdmin configuration updated")
+        print("✓ phpMyAdmin configuration updated")
 
-    print(f"\nNext steps:")
-    print(f"1. Start the database: docker-compose -f docker-compose.yml -f docker-compose.phpmyadmin-override.yml -f {compose_file} up -d {db_name}")
-    print(f"2. Or start all: ./start-all.sh")
-    print(f"3. Refresh phpMyAdmin in browser - new database will appear in dropdown")
+    print("\nNext steps:")
+    print(
+        f"1. Start the database: docker-compose -f docker-compose.yml -f docker-compose.phpmyadmin-override.yml -f {compose_file} up -d {db_name}"
+    )
+    print("2. Or start all: ./start-all.sh")
+    print("3. Refresh phpMyAdmin in browser - new database will appear in dropdown")
 
     return True
 
