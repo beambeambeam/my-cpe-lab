@@ -46,7 +46,7 @@ CREATE TABLE accounts (
     balance DECIMAL(15, 2)
 );
 
--- 5. Car dealer: cars, customers, and orders
+-- 5.
 CREATE TABLE cars (
     vin VARCHAR(17) PRIMARY KEY,
     model VARCHAR(50),
