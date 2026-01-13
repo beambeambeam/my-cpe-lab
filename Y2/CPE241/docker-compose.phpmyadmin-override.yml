@@ -1,9 +1,0 @@
-version: "3.8"
-
-services:
-  phpmyadmin:
-    environment:
-      PMA_HOST: null
-      PMA_PORT: null
-      PMA_HOSTS: db_default
-      PMA_PORTS: 3306
