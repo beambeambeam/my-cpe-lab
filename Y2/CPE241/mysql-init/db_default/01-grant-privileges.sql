@@ -1,3 +1,3 @@
--- Grant privileges to create databases for cpe241_user
-GRANT CREATE ON *.* TO 'cpe241_user'@'%';
+-- Grant all privileges (superadmin) to cpe241_user
+GRANT ALL PRIVILEGES ON *.* TO 'cpe241_user'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
