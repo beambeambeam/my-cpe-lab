@@ -1,6 +1,6 @@
 # CPE241 Docker Setup
 
-Simple Docker environment with MySQL 8.0 and phpMyAdmin.
+Docker environment with MySQL 8.0, PostgreSQL, phpMyAdmin, and pgAdmin.
 
 ## Prerequisites
 
@@ -25,13 +25,24 @@ Simple Docker environment with MySQL 8.0 and phpMyAdmin.
 
 4. **Access services:**
    - phpMyAdmin: http://localhost:8081
+   - pgAdmin: http://localhost:8082
    - MySQL: localhost:3306
+   - PostgreSQL: localhost:5432
 
 ## Default Credentials
 
-- **MySQL Root:** `root` / `rootpassword`
-- **MySQL User:** `cpe241_user` / `cpe241_password`
+### MySQL
+- **Root:** `root` / `rootpassword`
+- **User:** `cpe241_user` / `cpe241_password`
 - **Database:** `db_default`
+
+### PostgreSQL
+- **User:** `postgres_user` / `postgres_password`
+- **Database:** `postgres_db`
+
+### pgAdmin
+- **Email:** `admin@example.com`
+- **Password:** `pgadmin_password`
 
 ## Useful Commands
 
@@ -51,12 +62,33 @@ docker-compose up -d --build
 # Access MySQL CLI
 docker exec -it cpe241_mysql_db_default mysql -u root -p
 
-# Restart phpMyAdmin
+# Access PostgreSQL CLI
+docker exec -it cpe241_postgres psql -U postgres_user -d postgres_db
+
+# Restart services
 docker-compose restart phpmyadmin
+docker-compose restart pgadmin
 ```
 
 ## Project Structure
 
 - `docker-compose.yml` - Service orchestration
 - `.env` - Environment variables (create from `env.example`)
-- `mysql-init/db_default/` - SQL scripts for initialization (optional)
+- `mysql-init/db_default/` - MySQL SQL scripts for initialization (optional)
+- `postgres-init/` - PostgreSQL SQL scripts for initialization (optional)
+
+## Connecting pgAdmin to PostgreSQL
+
+After starting the services:
+
+1. Access pgAdmin at http://localhost:8082
+2. Login with the credentials from `.env` (default: `admin@example.com` / `pgadmin_password`)
+3. Right-click "Servers" → "Register" → "Server"
+4. In the "General" tab:
+   - Name: `PostgreSQL` (or any name)
+5. In the "Connection" tab:
+   - Host name/address: `postgres`
+   - Port: `5432`
+   - Username: `postgres_user` (from `.env`)
+   - Password: `postgres_password` (from `.env`)
+6. Click "Save"
