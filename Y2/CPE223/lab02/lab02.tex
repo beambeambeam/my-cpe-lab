@@ -1,0 +1,123 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    breaklines=true
+}
+
+\begin{document}
+
+\begin{center}
+\textbf{Group P’Tae Space Force} \\
+\end{center}
+\begin{center}
+  Jetanin Naitho 67070501011 \\
+  Nantakorn Pinsupapron 67070501028 \\
+  Supawit Marayat 67070501045
+\end{center}
+
+\section*{Problem 1}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|>{\centering\arraybackslash}p{2.5cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|}
+\hline
+Ri/LOC & R1 & R2 & R3 & {[}100{]} & {[}104{]} \\
+\hline
+Initial & 5 & 10 & 0 & 20 & x \\
+\hline
+Inst 1. & 5 & 10 & 20 & 20 & x \\
+\hline
+Inst 2. & 30 & 10 & 20 & 20 & x \\
+\hline
+Inst 3. & 30 & 10 & 20 & 20 & x \\
+\hline
+Inst 4. & 30 & 10 & 20 & 20 & 10 \\
+\hline
+\end{tabular}
+\end{center}
+
+\section*{Problem 2}
+
+\subsection*{C Language}
+
+This is a C program that uses a `for` loop to compute the 44th Fibonacci number. The two previous numbers in the sequence are stored in variables `a` and `b`, and on each iteration, we compute the next Fibonacci number, update the variables, and continue until reaching the 44th term. The result is printed at the end.
+
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+int main() {
+    long long a = 0, b = 1, temp;
+
+    for (int i = 2; i <= 44; i++) {
+        temp = a + b;
+        a = b;
+        b = temp;
+    }
+
+    printf("44th Fibonacci number: %lld\n", b);
+    return 0;
+}
+\end{lstlisting}
+
+\newpage
+
+\subsection*{ARM Assembly}
+
+This ARM Assembly code implements a loop to calculate the 44th Fibonacci number, similar to the C program shown above.
+
+\begin{itemize}
+    \item The registers R0 and R1 are used to store the previous two Fibonacci numbers (analogous to \texttt{a} and \texttt{b} in C).
+    \item R2 is used as a temporary register to hold the sum, and R3 functions as the loop counter \texttt{i}.
+    \item The loop iterates from \texttt{i = 2} up to 44, adding the previous two numbers, updating registers accordingly each time.
+    \item After reaching the 44th iteration, the program prints the Fibonacci number using the \texttt{printf} function, referencing a string in the \texttt{.data} section.
+\end{itemize}
+
+
+
+\begin{lstlisting}
+.global main
+.text
+
+main:
+    PUSH {LR}
+    MOV R0, #0          @ a = 0
+    MOV R1, #1          @ b = 1
+    MOV R3, #2          @ i = 2
+
+loop:
+    CMP R3, #44
+    BGT done
+    ADD R2, R0, R1      @ temp = a + b
+    MOV R0, R1          @ a = b
+    MOV R1, R2          @ b = temp
+    ADD R3, R3, #1      @ i++
+    B loop
+
+done:
+    LDR R0, =format
+    BL printf
+    MOV R0, #0
+    POP {PC}
+
+.data
+format: .asciz "44th Fibonacci number: %d\n"
+\end{lstlisting}
+
+\subsection*{Converting C to ARM Assembly}
+
+Command(s)/steps used to convert C into ARM assembly.
+
+This assembly code was written (converted) by hand based on C source code. Already check and it run!.
+
+\end{document}
