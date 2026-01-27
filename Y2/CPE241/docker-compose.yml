@@ -1,55 +1,6 @@
 version: "3.8"
 
 services:
-  db_default:
-    image: mysql:8.0
-    container_name: cpe241_mysql_db_default
-    platform: linux/arm64
-    restart: unless-stopped
-    ports:
-      - "${DB_DEFAULT_PORT:-3306}:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DEFAULT_DATABASE:-db_default}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_CHARACTER_SET_SERVER: utf8mb4
-      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
-    volumes:
-      - mysql_db_default_data:/var/lib/mysql
-      - ./mysql-init/db_default:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password
-    networks:
-      - cpe241_network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    container_name: cpe241_phpmyadmin
-    platform: linux/amd64
-    restart: unless-stopped
-    ports:
-      - "${PHPMYADMIN_PORT:-8081}:80"
-    environment:
-      PMA_HOST: db_default
-      PMA_PORT: 3306
-      PMA_USER: ${MYSQL_USER:-root}
-      PMA_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      PMA_ARBITRARY: 1
-      UPLOAD_LIMIT: 64M
-      MAX_EXECUTION_TIME: 300
-    depends_on:
-      db_default:
-        condition: service_healthy
-    networks:
-      - cpe241_network
-
   postgres:
     image: postgres:latest
     container_name: cpe241_postgres
@@ -93,8 +44,6 @@ services:
       - cpe241_network
 
 volumes:
-  mysql_db_default_data:
-    driver: local
   postgres_data:
     driver: local
 
