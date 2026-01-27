@@ -1,0 +1,68 @@
+@startchen
+skinparam rankdir TB
+
+entity locations {
+  location_id <<key>>
+  street_address
+  postal_code
+  city
+  country_id
+}
+
+entity jobs {
+  job_id <<key>>
+  job_title
+  min_salary
+  max_salary
+}
+
+entity employees {
+  employee_id <<key>>
+  first_name
+  last_name
+  email
+  hire_date
+  job_id
+  department_id
+}
+
+entity departments {
+  department_id <<key>>
+  department_name
+  location_id
+  manager_id
+}
+
+entity employee_phones {
+  phone_id <<key>>
+  employee_id
+  phone_number
+  phone_type
+}
+
+relationship "Located At" as LOCATED_AT {
+}
+departments -N- LOCATED_AT
+LOCATED_AT -1- locations
+
+relationship "Managed By" as MANAGED_BY {
+}
+departments -1- MANAGED_BY
+MANAGED_BY -1- employees
+
+relationship "Has Job" as HAS_JOB {
+}
+employees -N- HAS_JOB
+HAS_JOB -1- jobs
+
+relationship "Works In" as WORKS_IN {
+}
+employees -N- WORKS_IN
+WORKS_IN -1- departments
+
+relationship "Belongs To" as BELONGS_TO {
+}
+employee_phones -N- BELONGS_TO
+BELONGS_TO -1- employees
+
+@endchen

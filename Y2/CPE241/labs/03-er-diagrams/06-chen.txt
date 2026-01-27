@@ -1,0 +1,93 @@
+@startchen
+skinparam rankdir TB
+
+entity movies {
+  movie_id <<key>>
+  title
+  original_title
+  release_year
+  release_date
+  duration_minutes
+  synopsis
+  language
+  country
+  budget
+  box_office
+  rating
+}
+
+entity actors {
+  actor_id <<key>>
+  first_name
+  last_name
+  stage_name
+  date_of_birth
+  nationality
+  gender
+  biography
+}
+
+entity casts {
+  cast_id <<key>>
+  movie_id
+  actor_id
+  role_name
+  billing_order
+  screen_time_minutes
+}
+
+entity genres {
+  genre_id <<key>>
+  genre_name
+  description
+}
+
+entity movie_genres {
+  movie_id
+  genre_id
+}
+
+entity directors {
+  director_id <<key>>
+  first_name
+  last_name
+  date_of_birth
+  nationality
+}
+
+entity movie_directors {
+  movie_id
+  director_id
+}
+
+relationship "Has Cast" as HAS_CAST {
+}
+movies -1- HAS_CAST
+HAS_CAST -N- casts
+
+relationship "Appears In" as APPEARS_IN {
+}
+actors -N- APPEARS_IN
+APPEARS_IN -1- casts
+
+relationship "Has Genre" as HAS_GENRE {
+}
+movies -1- HAS_GENRE
+HAS_GENRE -N- movie_genres
+
+relationship "Belongs To" as BELONGS_TO {
+}
+genres -N- BELONGS_TO
+BELONGS_TO -1- movie_genres
+
+relationship "Directed By" as DIRECTED_BY {
+}
+movies -1- DIRECTED_BY
+DIRECTED_BY -N- movie_directors
+
+relationship "Directs" as DIRECTS {
+}
+directors -N- DIRECTS
+DIRECTS -1- movie_directors
+
+@endchen

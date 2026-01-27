@@ -1,0 +1,69 @@
+@startuml
+
+class movies {
+  +movie_id : int <<PK>>
+  +title : varchar
+  +original_title : varchar
+  +release_year : int
+  +release_date : date
+  +duration_minutes : int
+  +synopsis : text
+  +language : varchar
+  +country : varchar
+  +budget : decimal
+  +box_office : decimal
+  +rating : decimal
+}
+
+class actors {
+  +actor_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +stage_name : varchar
+  +date_of_birth : date
+  +nationality : varchar
+  +gender : varchar
+  +biography : text
+}
+
+class directors {
+  +director_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +date_of_birth : date
+  +nationality : varchar
+}
+
+class genres {
+  +genre_id : int <<PK>>
+  +genre_name : varchar
+  +description : text
+}
+
+class casts {
+  +cast_id : int <<PK>>
+  +movie_id : int <<FK>>
+  +actor_id : int <<FK>>
+  +role_name : varchar
+  +billing_order : int
+  +screen_time_minutes : int
+}
+
+class moviegenres {
+  +movie_id : int <<FK>>
+  +genre_id : int <<FK>>
+}
+
+class moviedirectors {
+  +movie_id : int <<FK>>
+  +director_id : int <<FK>>
+}
+
+movies "0..*" --> "1" casts : Has Cast
+actors "0..*" --> "1" casts : In Cast
+movies "0..*" --> "1" moviedirectors : Has Director
+directors "0..*" --> "1" moviedirectors : Directs
+movies "0..*" --> "1" moviegenres : Has Genre
+genres "0..*" --> "1" moviegenres : In Genre
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml
+
+class locations {
+  +location_id : int <<PK>>
+  +street_address : varchar
+  +postal_code : varchar
+  +city : varchar
+  +country_id : int
+}
+
+class departments {
+  +department_id : int <<PK>>
+  +department_name : varchar
+  +location_id : int <<FK>>
+  +manager_id : int <<FK>>
+}
+
+class jobs {
+  +job_id : int <<PK>>
+  +job_title : varchar
+  +min_salary : decimal
+  +max_salary : decimal
+}
+
+class employees {
+  +employee_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +email : varchar
+  +hire_date : date
+  +job_id : int <<FK>>
+  +department_id : int <<FK>>
+}
+
+class employee_phones {
+  +phone_id : int <<PK>>
+  +employee_id : int <<FK>>
+  +phone_number : varchar
+  +phone_type : varchar
+}
+
+departments "0..*" --> "1" locations : Located At
+departments "0..1" --> "1" employees : Managed By
+employees "0..*" --> "1" jobs : Has Job
+employees "0..*" --> "1" departments : Works In
+employee_phones "0..*" --> "1" employees : Belongs To
+
+@enduml

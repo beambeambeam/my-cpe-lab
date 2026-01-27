@@ -1,0 +1,21 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.idx
+*.ilg
+*.ind
+
+# PDF output (uncomment if you don't want to track PDFs)
+*.pdf
+
+# VS Code settings (optional - you may want to commit this)
+# .vscode/
