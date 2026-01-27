@@ -1,0 +1,74 @@
+@startuml
+
+entity movies {
+  * movie_id : INT <<PK>>
+  --
+  title : VARCHAR(255)
+  original_title : VARCHAR(255)
+  release_year : INT
+  release_date : DATE
+  duration_minutes : INT
+  synopsis : TEXT
+  language : VARCHAR(50)
+  country : VARCHAR(100)
+  budget : DECIMAL(15,2)
+  box_office : DECIMAL(15,2)
+  rating : DECIMAL(3,1)
+}
+
+entity actors {
+  * actor_id : INT <<PK>>
+  --
+  first_name : VARCHAR(100)
+  last_name : VARCHAR(100)
+  stage_name : VARCHAR(100)
+  date_of_birth : DATE
+  nationality : VARCHAR(100)
+  gender : VARCHAR(20)
+  biography : TEXT
+}
+
+entity directors {
+  * director_id : INT <<PK>>
+  --
+  first_name : VARCHAR(100)
+  last_name : VARCHAR(100)
+  date_of_birth : DATE
+  nationality : VARCHAR(100)
+}
+
+entity genres {
+  * genre_id : INT <<PK>>
+  --
+  genre_name : VARCHAR(100)
+  description : TEXT
+}
+
+entity casts {
+  * cast_id : INT <<PK>>
+  --
+  * movie_id : INT <<FK>>
+  * actor_id : INT <<FK>>
+  role_name : VARCHAR(255)
+  billing_order : INT
+  screen_time_minutes : INT
+}
+
+entity movie_genres {
+  * movie_id : INT <<FK>>
+  * genre_id : INT <<FK>>
+}
+
+entity movie_directors {
+  * movie_id : INT <<FK>>
+  * director_id : INT <<FK>>
+}
+
+movies ||--o{ casts : Has Cast
+actors ||--o{ casts : In Cast
+movies ||--o{ movie_directors : Has Director
+directors ||--o{ movie_directors : Directs
+movies ||--o{ movie_genres : Has Genre
+genres ||--o{ movie_genres : In Genre
+
+@enduml

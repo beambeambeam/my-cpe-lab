@@ -1,0 +1,36 @@
+@startchen
+skinparam rankdir TB
+
+entity offices {
+  office_id <<key>>
+  office_name
+  address_line1
+  address_line2
+  city
+  state
+  postal_code
+  country
+  phone
+}
+
+entity employees {
+  employee_id <<key>>
+  firstname
+  middlename
+  lastname
+  job_title
+  hire_date
+  citizen_id
+  email
+  phone
+  office_id
+  status
+  create_at
+}
+
+relationship "Works At" as WORKS_AT {
+}
+employees -N- WORKS_AT
+WORKS_AT -1- offices
+
+@endchen

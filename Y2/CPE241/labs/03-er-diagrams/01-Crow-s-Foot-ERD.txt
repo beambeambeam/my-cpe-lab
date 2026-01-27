@@ -1,0 +1,34 @@
+@startuml
+
+entity employees {
+  * employee_id : INT <<PK>>
+  --
+  firstname : VARCHAR(50)
+  middlename : VARCHAR(50)
+  lastname : VARCHAR(50)
+  job_title : VARCHAR(100)
+  hire_date : DATE
+  citizen_id : VARCHAR(50)
+  email : VARCHAR(100)
+  phone : VARCHAR(20)
+  * office_id : INT <<FK>>
+  status : VARCHAR(50)
+  create_at : TIMESTAMP
+}
+
+entity offices {
+  * office_id : INT <<PK>>
+  --
+  office_name : VARCHAR(100)
+  address_line1 : VARCHAR(200)
+  address_line2 : VARCHAR(200)
+  city : VARCHAR(100)
+  state : VARCHAR(100)
+  postal_code : VARCHAR(20)
+  country : VARCHAR(100)
+  phone : VARCHAR(20)
+}
+
+employees }o--|| offices : Works At
+
+@enduml

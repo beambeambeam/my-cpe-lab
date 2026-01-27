@@ -1,0 +1,32 @@
+@startuml
+
+class employees {
+  +employee_id : int <<PK>>
+  +firstname : varchar
+  +middlename : varchar
+  +lastname : varchar
+  +job_title : varchar
+  +hire_date : date
+  +citizen_id : varchar
+  +email : varchar
+  +phone : varchar
+  +office_id : int <<FK>>
+  +status : varchar
+  +create_at : timestamp
+}
+
+class offices {
+  +office_id : int <<PK>>
+  +office_name : varchar
+  +address_line1 : varchar
+  +address_line2 : varchar
+  +city : varchar
+  +state : varchar
+  +postal_code : varchar
+  +country : varchar
+  +phone : varchar
+}
+
+employees "0..*" --> "1" offices : Works At
+
+@enduml

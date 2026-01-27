@@ -1,0 +1,53 @@
+@startuml
+
+entity locations {
+  * location_id : INT <<PK>>
+  --
+  street_address : VARCHAR(200)
+  postal_code : VARCHAR(20)
+  city : VARCHAR(100)
+  country_id : INT
+}
+
+entity departments {
+  * department_id : INT <<PK>>
+  --
+  department_name : VARCHAR(100)
+  * location_id : INT <<FK>>
+  * manager_id : INT <<FK>>
+}
+
+entity jobs {
+  * job_id : INT <<PK>>
+  --
+  job_title : VARCHAR(100)
+  min_salary : DECIMAL(10,2)
+  max_salary : DECIMAL(10,2)
+}
+
+entity employees {
+  * employee_id : INT <<PK>>
+  --
+  first_name : VARCHAR(50)
+  last_name : VARCHAR(50)
+  email : VARCHAR(100)
+  hire_date : DATE
+  * job_id : INT <<FK>>
+  * department_id : INT <<FK>>
+}
+
+entity employee_phones {
+  * phone_id : INT <<PK>>
+  --
+  * employee_id : INT <<FK>>
+  phone_number : VARCHAR(20)
+  phone_type : VARCHAR(20)
+}
+
+departments }o--|| locations : Located At
+departments }o--o| employees : Managed By
+employees }o--|| jobs : Has Job
+employees }o--|| departments : Works In
+employee_phones }o--|| employees : Belongs To
+
+@enduml
