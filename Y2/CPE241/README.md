@@ -1,6 +1,6 @@
 # CPE241 Docker Setup
 
-Docker environment with MySQL 8.0, PostgreSQL, phpMyAdmin, and pgAdmin.
+Docker environment with PostgreSQL and pgAdmin.
 
 ## Prerequisites
 
@@ -24,17 +24,10 @@ Docker environment with MySQL 8.0, PostgreSQL, phpMyAdmin, and pgAdmin.
    ```
 
 4. **Access services:**
-   - phpMyAdmin: http://localhost:8081
    - pgAdmin: http://localhost:8082
-   - MySQL: localhost:3306
    - PostgreSQL: localhost:5432
 
 ## Default Credentials
-
-### MySQL
-- **Root:** `root` / `rootpassword`
-- **User:** `cpe241_user` / `cpe241_password`
-- **Database:** `db_default`
 
 ### PostgreSQL
 - **User:** `postgres_user` / `postgres_password`
@@ -59,14 +52,10 @@ docker-compose down -v
 # Rebuild containers
 docker-compose up -d --build
 
-# Access MySQL CLI
-docker exec -it cpe241_mysql_db_default mysql -u root -p
-
 # Access PostgreSQL CLI
 docker exec -it cpe241_postgres psql -U postgres_user -d postgres_db
 
 # Restart services
-docker-compose restart phpmyadmin
 docker-compose restart pgadmin
 ```
 
@@ -74,7 +63,6 @@ docker-compose restart pgadmin
 
 - `docker-compose.yml` - Service orchestration
 - `.env` - Environment variables (create from `env.example`)
-- `mysql-init/db_default/` - MySQL SQL scripts for initialization (optional)
 - `postgres-init/` - PostgreSQL SQL scripts for initialization (optional)
 
 ## Connecting pgAdmin to PostgreSQL
