@@ -1,1 +1,43 @@
+# IDE
 .cursor/*
+.vscode/*
+.idea/*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# HTML exports from notebooks
+*.html
+!*.ipynb
+
+# Data (optional - uncomment if you don't want to track large data files)
+# *.csv
+# *.json
+# *.xml
+# *.zip
+
+# Large files
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Logs
+*.log
