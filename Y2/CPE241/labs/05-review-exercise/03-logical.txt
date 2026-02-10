@@ -1,0 +1,67 @@
+@startchen
+skinparam rankdir TB
+
+entity customers {
+  customer_id <<key>>
+  first_name
+  last_name
+  email
+  phone
+  created_at
+}
+
+entity orders {
+  order_id <<key>>
+  customer_id
+  order_date
+  status
+  total_amount
+}
+
+entity products {
+  product_id <<key>>
+  product_name
+  sku
+  unit_price
+  active
+}
+
+entity product_line_items {
+  line_item_id <<key>>
+  order_id
+  product_id
+  quantity
+  unit_price
+  line_total
+}
+
+entity payments {
+  payment_id <<key>>
+  order_id
+  payment_date
+  amount
+  method
+  status
+}
+
+relationship "Places" as PLACES {
+}
+customers -1- PLACES
+PLACES -N- orders
+
+relationship "Contains" as CONTAINS {
+}
+orders -1- CONTAINS
+CONTAINS -N- product_line_items
+
+relationship "Item Of" as ITEM_OF {
+}
+products -1- ITEM_OF
+ITEM_OF -N- product_line_items
+
+relationship "Paid By" as PAID_BY {
+}
+orders -1- PAID_BY
+PAID_BY -N- payments
+
+@endchen

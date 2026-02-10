@@ -1,0 +1,69 @@
+@startchen
+skinparam rankdir TB
+
+entity directors {
+  director_id <<key>>
+  first_name
+  last_name
+  date_of_birth
+  nationality
+}
+
+entity movies {
+  movie_id <<key>>
+  title
+  release_year
+  duration_minutes
+  language
+  country
+  rating
+  director_id
+}
+
+entity actors {
+  actor_id <<key>>
+  first_name
+  last_name
+  stage_name
+  date_of_birth
+  nationality
+}
+
+entity act_ins {
+  act_in_id <<key>>
+  movie_id
+  actor_id
+  role_name
+  billing_order
+}
+
+entity reviews {
+  review_id <<key>>
+  movie_id
+  reviewer_name
+  rating
+  review_text
+  review_date
+}
+
+relationship "Directs" as DIRECTS {
+}
+directors -1- DIRECTS
+DIRECTS -N- movies
+
+relationship "Acts In" as ACTS_IN {
+}
+actors -N- ACTS_IN
+ACTS_IN -1- act_ins
+
+relationship "Cast For" as CAST_FOR {
+}
+movies -N- CAST_FOR
+CAST_FOR -1- act_ins
+
+relationship "Reviewed" as REVIEWED {
+}
+movies -1- REVIEWED
+REVIEWED -N- reviews
+
+@endchen

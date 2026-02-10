@@ -1,0 +1,51 @@
+@startuml
+
+class customers {
+  +customer_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +email : varchar
+  +phone : varchar
+  +created_at : date
+}
+
+class orders {
+  +order_id : int <<PK>>
+  +order_date : date
+  +status : varchar
+  +total_amount : decimal
+  +customer_id : int <<FK>>
+}
+
+class products {
+  +product_id : int <<PK>>
+  +product_name : varchar
+  +sku : varchar
+  +unit_price : decimal
+  +active : boolean
+}
+
+class product_line_items {
+  +line_item_id : int <<PK>>
+  +quantity : int
+  +unit_price : decimal
+  +line_total : decimal
+  +order_id : int <<FK>>
+  +product_id : int <<FK>>
+}
+
+class payments {
+  +payment_id : int <<PK>>
+  +payment_date : date
+  +amount : decimal
+  +method : varchar
+  +status : varchar
+  +order_id : int <<FK>>
+}
+
+customers "1" --> "0..*" orders : Places
+orders "1" --> "0..*" product_line_items : Contains
+products "1" --> "0..*" product_line_items : Item Of
+orders "1" --> "0..*" payments : Paid By
+
+@enduml
