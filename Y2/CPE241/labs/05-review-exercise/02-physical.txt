@@ -1,0 +1,53 @@
+@startuml
+
+class directors {
+  +director_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +date_of_birth : date
+  +nationality : varchar
+}
+
+class movies {
+  +movie_id : int <<PK>>
+  +title : varchar
+  +release_year : int
+  +duration_minutes : int
+  +language : char
+  +country : varchar
+  +rating : decimal
+  +director_id : int <<FK>>
+}
+
+class actors {
+  +actor_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +stage_name : varchar
+  +date_of_birth : date
+  +nationality : varchar
+}
+
+class act_ins {
+  +act_in_id : int <<PK>>
+  +role_name : varchar
+  +billing_order : int
+  +movie_id : int <<FK>>
+  +actor_id : int <<FK>>
+}
+
+class reviews {
+  +review_id : int <<PK>>
+  +reviewer_name : varchar
+  +rating : decimal
+  +review_text : varchar
+  +review_date : date
+  +movie_id : int <<FK>>
+}
+
+directors "1" --> "0..*" movies : Directs
+movies "1" --> "0..*" reviews : Reviewed By
+movies "1" --> "0..*" act_ins : Cast
+actors "1" --> "0..*" act_ins : Acts In
+
+@enduml

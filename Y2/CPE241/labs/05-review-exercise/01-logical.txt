@@ -1,0 +1,72 @@
+@startchen
+skinparam rankdir TB
+
+entity departments {
+  dept_id <<key>>
+  dept_name
+  office_phone
+  office_location
+}
+
+entity students {
+  student_id <<key>>
+  first_name
+  last_name
+  email
+  enroll_date
+  dept_id
+  status
+}
+
+entity courses {
+  course_id <<key>>
+  course_code
+  title
+  credits
+  dept_id
+}
+
+entity registrations {
+  registration_id <<key>>
+  student_id
+  course_id
+  term
+  year
+  registered_at
+  status
+}
+
+entity grades {
+  grade_id <<key>>
+  registration_id
+  grade_value
+  grade_points
+  graded_at
+}
+
+relationship "Department Courses" as DEPT_COURSES {
+}
+departments -1- DEPT_COURSES
+DEPT_COURSES -N- courses
+
+relationship "Department Students" as DEPT_STUDENTS {
+}
+departments -1- DEPT_STUDENTS
+DEPT_STUDENTS -N- students
+
+relationship "Student Registration" as STUDENT_REG {
+}
+students -N- STUDENT_REG
+STUDENT_REG -1- registrations
+
+relationship "Course Registration" as COURSE_REG {
+}
+courses -N- COURSE_REG
+COURSE_REG -1- registrations
+
+relationship "Graded" as GRADED {
+}
+registrations -1- GRADED
+GRADED -1- grades
+
+@endchen

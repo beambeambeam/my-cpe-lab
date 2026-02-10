@@ -1,0 +1,52 @@
+@startuml
+
+class departments {
+  +dept_id : int <<PK>>
+  +dept_name : varchar
+  +office_phone : varchar
+  +office_location : varchar
+}
+
+class students {
+  +student_id : int <<PK>>
+  +first_name : varchar
+  +last_name : varchar
+  +email : varchar
+  +enroll_date : date
+  +status : varchar
+  +dept_id : int <<FK>>
+}
+
+class courses {
+  +course_id : int <<PK>>
+  +course_code : varchar
+  +title : varchar
+  +credits : int
+  +dept_id : int <<FK>>
+}
+
+class registrations {
+  +registration_id : int <<PK>>
+  +term : varchar
+  +year : int
+  +registered_at : date
+  +status : varchar
+  +student_id : int <<FK>>
+  +course_id : int <<FK>>
+}
+
+class grades {
+  +grade_id : int <<PK>>
+  +grade_value : varchar
+  +grade_points : decimal
+  +graded_at : date
+  +registration_id : int <<FK>>
+}
+
+students "0..*" --> "1" departments : Belongs To
+courses "0..*" --> "1" departments : Offered By
+registrations "0..*" --> "1" students : For
+registrations "0..*" --> "1" courses : For
+grades "0..1" --> "1" registrations : Assigned For
+
+@enduml
