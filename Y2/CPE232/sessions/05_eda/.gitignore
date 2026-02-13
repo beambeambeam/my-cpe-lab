@@ -1,0 +1,36 @@
+# Downloaded and extracted data files
+data/
+.cache/
+data.zip
+all_constituency/
+area/
+party/
+partylist/
+referendum/
+seat/
+winner/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Font files (optional - uncomment if you want to track fonts)
+# *.ttf
