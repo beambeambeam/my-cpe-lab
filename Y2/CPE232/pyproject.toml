@@ -16,6 +16,7 @@ dependencies = [
     "plotly>=6.5.2",
     "ruff>=0.14.13",
     "ruff-lsp>=0.0.62",
+    "scikit-learn>=1.8.0",
     "seaborn>=0.13.2",
 ]
 
