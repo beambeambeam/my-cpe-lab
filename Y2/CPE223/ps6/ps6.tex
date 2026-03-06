@@ -1,0 +1,256 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{array}
+\usepackage{amssymb}
+
+\InputIfFileExists{ps6-header.tex}{}{
+    \newcommand{\TeamName}{Team name here}
+    \newcommand{\MemberOne}{Member 1 name here}
+    \newcommand{\MemberOneCode}{Member 1 code here}
+    \newcommand{\MemberTwo}{Member 2 name here}
+    \newcommand{\MemberTwoCode}{Member 2 code here}
+}
+
+\begin{document}
+
+\begin{center}
+\section*{Problem Session 6: Arithmetic}
+\textbf{Team: \TeamName}\\
+\textit{\MemberOne\ (\MemberOneCode)}\\
+\textit{\MemberTwo\ (\MemberTwoCode)}
+\end{center}
+
+% ============================================================
+\subsection*{1. Booth's Algorithm}
+% ============================================================
+
+Booth's algorithm performs signed multiplication in 2's complement by examining one
+bit at a time, comparing each multiplier bit $Q_0$ with the previous bit $Q_{-1}$.
+When $(Q_0, Q_{-1}) = (1,0)$ subtract the multiplicand; when $(0,1)$ add it;
+otherwise just shift.  An arithmetic right shift propagates the sign bit, keeping
+the partial product in sign-extended form throughout.
+
+% ------- Problem 1: -4 x 5 -------
+\subsubsection*{Problem 1: $-4 \times 5$}
+
+\noindent
+Given (4-bit 2's complement):\\
+Multiplicand $M = -4 = \texttt{1100}_2$,\quad
+$-M = +4 = \texttt{0100}_2$,\quad
+Multiplier $Q = +5 = \texttt{0101}_2$,\quad
+$Q_{-1} = 0$
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{5.5cm}|>{\centering\arraybackslash}p{1.8cm}|>{\centering\arraybackslash}p{1.8cm}|>{\centering\arraybackslash}p{1.2cm}|}
+\hline
+\textbf{Step} & \textbf{Operation} & \textbf{A} & \textbf{Q} & \textbf{$Q_{-1}$} \\
+\hline
+Initial & --- & \texttt{0000} & \texttt{0101} & 0 \\
+\hline
+1a & $Q_0=1,\,Q_{-1}=0$: $A \leftarrow A+(-M)$ \newline $= \texttt{0000}+\texttt{0100}$ & \texttt{0100} & \texttt{0101} & 0 \\
+\hline
+1b & Arithmetic right shift & \texttt{0010} & \texttt{0010} & 1 \\
+\hline
+2a & $Q_0=0,\,Q_{-1}=1$: $A \leftarrow A+M$ \newline $= \texttt{0010}+\texttt{1100}$ & \texttt{1110} & \texttt{0010} & 1 \\
+\hline
+2b & Arithmetic right shift & \texttt{1111} & \texttt{0001} & 0 \\
+\hline
+3a & $Q_0=1,\,Q_{-1}=0$: $A \leftarrow A+(-M)$ \newline $= \texttt{1111}+\texttt{0100}$ & \texttt{0011} & \texttt{0001} & 0 \\
+\hline
+3b & Arithmetic right shift & \texttt{0001} & \texttt{1000} & 1 \\
+\hline
+4a & $Q_0=0,\,Q_{-1}=1$: $A \leftarrow A+M$ \newline $= \texttt{0001}+\texttt{1100}$ & \texttt{1101} & \texttt{1000} & 1 \\
+\hline
+4b & Arithmetic right shift & \texttt{1110} & \texttt{1100} & 0 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Result:} $[A \mid Q] = \texttt{1110\,1100}_2$.
+In 8-bit 2's complement: $-(00010100_2) = -(20_{10}) = \mathbf{-20}$ \checkmark
+
+% ------- Problem 2: 5 x -4 -------
+\subsubsection*{Problem 2: $5 \times (-4)$}
+
+\noindent
+Given (4-bit 2's complement):\\
+Multiplicand $M = +5 = \texttt{0101}_2$,\quad
+$-M = -5 = \texttt{1011}_2$,\quad
+Multiplier $Q = -4 = \texttt{1100}_2$,\quad
+$Q_{-1} = 0$
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{5.5cm}|>{\centering\arraybackslash}p{1.8cm}|>{\centering\arraybackslash}p{1.8cm}|>{\centering\arraybackslash}p{1.2cm}|}
+\hline
+\textbf{Step} & \textbf{Operation} & \textbf{A} & \textbf{Q} & \textbf{$Q_{-1}$} \\
+\hline
+Initial & --- & \texttt{0000} & \texttt{1100} & 0 \\
+\hline
+1a & $Q_0=0,\,Q_{-1}=0$: no operation & \texttt{0000} & \texttt{1100} & 0 \\
+\hline
+1b & Arithmetic right shift & \texttt{0000} & \texttt{0110} & 0 \\
+\hline
+2a & $Q_0=0,\,Q_{-1}=0$: no operation & \texttt{0000} & \texttt{0110} & 0 \\
+\hline
+2b & Arithmetic right shift & \texttt{0000} & \texttt{0011} & 0 \\
+\hline
+3a & $Q_0=1,\,Q_{-1}=0$: $A \leftarrow A+(-M)$ \newline $= \texttt{0000}+\texttt{1011}$ & \texttt{1011} & \texttt{0011} & 0 \\
+\hline
+3b & Arithmetic right shift & \texttt{1101} & \texttt{1001} & 1 \\
+\hline
+4a & $Q_0=1,\,Q_{-1}=1$: no operation & \texttt{1101} & \texttt{1001} & 1 \\
+\hline
+4b & Arithmetic right shift & \texttt{1110} & \texttt{1100} & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Result:} $[A \mid Q] = \texttt{1110\,1100}_2 = \mathbf{-20}$ \checkmark
+
+% ------- Discussion: Booth's -------
+\subsubsection*{Discussion}
+
+Both orderings produce the same 8-bit result $\texttt{1110\,1100}_2 = -20$, confirming
+that Booth's algorithm correctly handles signed operands regardless of which value is
+placed in $M$ or $Q$.
+
+The key difference lies in efficiency.  With $Q = \texttt{0101}$ ($-4 \times 5$)
+every adjacent pair of bits alternates $(0{\leftrightarrow}1)$, so \emph{all four}
+steps require an add or subtract.  With $Q = \texttt{1100}$ ($5 \times -4$) there
+are only two distinct runs of identical bits, yielding just \emph{one} add/subtract
+operation across four steps.  In hardware this translates directly to fewer adder
+activations per multiplication.  Booth's algorithm therefore performs better
+when the multiplier contains long runs of identical bits.
+
+% ============================================================
+\subsection*{2. Bit-Pair Recoding (Modified Booth's Algorithm)}
+% ============================================================
+
+Bit-pair recoding (Modified Booth) examines the multiplier in overlapping groups of
+three bits, stepping two positions at a time.  Each group $(Q_{2i+1},\,Q_{2i},\,Q_{2i-1})$
+encodes one partial product whose weight is $\{0,\pm1M,\pm2M\}$.  For an $n$-bit
+multiplier this halves the number of partial products from $n$ to $n/2$.
+
+\noindent
+\textbf{Encoding table:}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{1.8cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{3cm}|}
+\hline
+$Q_{2i+1}$ & $Q_{2i}$ & $Q_{2i-1}$ & Multiplier \\
+\hline
+0 & 0 & 0 & $0$ \\
+\hline
+0 & 0 & 1 & $+1$ \\
+\hline
+0 & 1 & 0 & $+1$ \\
+\hline
+0 & 1 & 1 & $+2$ \\
+\hline
+1 & 0 & 0 & $-2$ \\
+\hline
+1 & 0 & 1 & $-1$ \\
+\hline
+1 & 1 & 0 & $-1$ \\
+\hline
+1 & 1 & 1 & $0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+% ------- Problem 1: -4 x 5 -------
+\subsubsection*{Problem 1: $-4 \times 5$}
+
+\noindent
+Multiplicand $M = -4 = \texttt{1100}_2$, \quad Multiplier $Q = +5 = \texttt{0101}_2$,
+append $Q_{-1} = 0$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{3cm}|}
+\hline
+\textbf{Group} & \textbf{Bits $(Q_{2i+1},Q_{2i},Q_{2i-1})$} & \textbf{Value} & \textbf{Partial Product} & \textbf{8-bit (shifted)} \\
+\hline
+$i=0$ & $(Q_1,Q_0,Q_{-1}) = (0,1,0)$ & $+1$ & $+1 \times M$ & \texttt{1111\,1100} \\
+\hline
+$i=1$ & $(Q_3,Q_2,Q_1) = (0,1,0)$ & $+1$ & $+1 \times M \ll 2$ & \texttt{1111\,0000} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Summing partial products:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ccccccccc}
+  & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{0} \\
+$+$ & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} \\
+\hline
+(1) & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{0} \\
+\end{tabular}
+\end{center}
+
+\noindent
+Carry out of bit 7 is discarded.
+\textbf{Result:} $\texttt{1110\,1100}_2 = \mathbf{-20}$ \checkmark
+
+% ------- Problem 2: 5 x -4 -------
+\subsubsection*{Problem 2: $5 \times (-4)$}
+
+\noindent
+Multiplicand $M = +5 = \texttt{0101}_2$, \quad Multiplier $Q = -4 = \texttt{1100}_2$,
+append $Q_{-1} = 0$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|>{\centering\arraybackslash}p{1.5cm}|>{\centering\arraybackslash}p{4.5cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{3cm}|}
+\hline
+\textbf{Group} & \textbf{Bits $(Q_{2i+1},Q_{2i},Q_{2i-1})$} & \textbf{Value} & \textbf{Partial Product} & \textbf{8-bit (shifted)} \\
+\hline
+$i=0$ & $(Q_1,Q_0,Q_{-1}) = (0,0,0)$ & $0$ & $0 \times M$ & \texttt{0000\,0000} \\
+\hline
+$i=1$ & $(Q_3,Q_2,Q_1) = (1,1,0)$ & $-1$ & $-1 \times M \ll 2$ & \texttt{1110\,1100} \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent Summing partial products:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ccccccccc}
+  & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} & \texttt{0} \\
+$+$ & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{0} \\
+\hline
+  & \texttt{1} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{1} & \texttt{1} & \texttt{0} & \texttt{0} \\
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Result:} $\texttt{1110\,1100}_2 = \mathbf{-20}$ \checkmark
+
+% ------- Discussion: Bit-Pair -------
+\subsubsection*{Discussion}
+
+Bit-pair recoding produces the same correct answer ($-20$) for both orderings,
+again confirming commutativity.
+
+The primary advantage over standard Booth's is a guaranteed reduction in partial
+products.  For 4-bit operands, standard Booth may generate up to 4 partial products;
+Modified Booth always generates exactly 2, halving the adder tree depth in hardware.
+This reduction scales: an $n$-bit multiplier always yields $n/2$ partial products,
+making the hardware cost predictable and independent of the operand values.
+
+A critical implementation detail is \emph{sign extension}.  When a partial product
+is negative (e.g.\ $-1 \times M$ in problem 2, group $i=1$), the 4-bit value
+$\texttt{0101}$ must be negated to $\texttt{1011}$ and then sign-extended to 8 bits
+(\texttt{1111\,1011}) before shifting left by 2 to get $\texttt{1110\,1100}$.
+Incorrect sign extension is one of the most common sources of error in both
+manual calculation and hardware implementation of Modified Booth's algorithm.
+
+\end{document}
