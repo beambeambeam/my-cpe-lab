@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  postgres_lab08:
+    image: postgres:16
+    container_name: cpe241_postgres_lab08
+    platform: linux/arm64
+    restart: unless-stopped
+    ports:
+      - "${LAB08_POSTGRES_PORT:-5433}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_password}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres_db}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_lab08_data:/var/lib/postgresql/data
+      - ./postgres-init/01-grant-superuser.sql:/docker-entrypoint-initdb.d/01-grant-superuser.sql:ro
+      - ./labs/08-analytics/prepare.sql:/docker-entrypoint-initdb.d/02-prepare.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres_user} -d ${POSTGRES_DB:-postgres_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  pgadmin_lab08:
+    image: dpage/pgadmin4:latest
+    container_name: cpe241_pgadmin_lab08
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      - "${LAB08_PGADMIN_PORT:-8083}:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-pgadmin_password}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    depends_on:
+      postgres_lab08:
+        condition: service_healthy
+
+volumes:
+  postgres_lab08_data:
+    driver: local
