@@ -1,0 +1,9 @@
+INSERT 0 5000
+ department | employee_count 
+------------+----------------
+ Finance    |           1250
+ HR         |           1251
+ IT         |             51
+ Sales      |           2450
+(4 rows)
+

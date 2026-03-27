@@ -1,0 +1,14 @@
+Generated artifacts:
+- 01_setup.txt: database reset and creation
+- 02_table.txt: employee table creation
+- 03_transaction_rollback.txt: rollback demonstration
+- 04_transaction_commit.txt: commit demonstration
+- 05_create_user_and_grants.txt: role creation and grants
+- 06_hr_user_access_before_revoke.txt: successful hr_user access
+- 07_create_view_and_revoke.txt: view creation and revoke
+- 08_hr_user_view_and_denied_table.txt: allowed view query and denied base-table query
+- 09_create_indexes.txt: index creation
+- 10_verify_indexes.txt: index verification
+- 11_seed_data.txt: bulk data load and department distribution
+- 12_explain_indexed_query.txt: indexed query execution plan
+- 13_explain_nonindexed_query.txt: non-indexed query execution plan

@@ -1,0 +1,9 @@
+                                              QUERY PLAN                                              
+------------------------------------------------------------------------------------------------------
+ Seq Scan on employee  (cost=0.00..43.05 rows=28 width=478) (actual time=0.357..0.868 rows=1 loops=1)
+   Filter: (salary > '90000'::numeric)
+   Rows Removed by Filter: 5001
+ Planning Time: 8.916 ms
+ Execution Time: 1.586 ms
+(5 rows)
+

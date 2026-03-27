@@ -1,0 +1,8 @@
+                                                         QUERY PLAN                                                         
+----------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_department on employee  (cost=0.27..8.29 rows=1 width=478) (actual time=0.384..0.450 rows=51 loops=1)
+   Index Cond: ((department)::text = 'IT'::text)
+ Planning Time: 9.931 ms
+ Execution Time: 1.618 ms
+(4 rows)
+

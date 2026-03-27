@@ -1,0 +1,7 @@
+ id | name  | position  | department
+----+-------+-----------+------------
+  3 | Bob   | Engineer  | IT
+  4 | Carol | Recruiter | HR
+(2 rows)
+
+ERROR:  permission denied for table employee

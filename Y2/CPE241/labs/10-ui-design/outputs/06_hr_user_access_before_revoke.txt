@@ -1,0 +1,12 @@
+ id | name | position | department |  salary  | hire_date  
+----+------+----------+------------+----------+------------
+  3 | Bob  | Engineer | IT         | 98000.00 | 2021-03-01
+(1 row)
+
+INSERT 0 1
+ id | name  | position  | department |  salary  | hire_date  
+----+-------+-----------+------------+----------+------------
+  3 | Bob   | Engineer  | IT         | 98000.00 | 2021-03-01
+  4 | Carol | Recruiter | HR         | 72000.00 | 2022-06-10
+(2 rows)
+

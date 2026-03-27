@@ -1,0 +1,7 @@
+   indexname    |                                     indexdef                                     
+----------------+----------------------------------------------------------------------------------
+ employee_pkey  | CREATE UNIQUE INDEX employee_pkey ON public.employee USING btree (id)
+ idx_department | CREATE INDEX idx_department ON public.employee USING btree (department)
+ idx_pos_date   | CREATE INDEX idx_pos_date ON public.employee USING btree ("position", hire_date)
+(3 rows)
+

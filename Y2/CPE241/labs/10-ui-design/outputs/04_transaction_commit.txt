@@ -1,0 +1,8 @@
+BEGIN
+INSERT 0 1
+COMMIT
+ id | name | position | department |  salary  | hire_date  
+----+------+----------+------------+----------+------------
+  3 | Bob  | Engineer | IT         | 98000.00 | 2021-03-01
+(1 row)
+

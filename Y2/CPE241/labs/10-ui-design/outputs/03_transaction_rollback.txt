@@ -1,0 +1,8 @@
+BEGIN
+INSERT 0 1
+INSERT 0 1
+ROLLBACK
+ id | name | position | department | salary | hire_date 
+----+------+----------+------------+--------+-----------
+(0 rows)
+
