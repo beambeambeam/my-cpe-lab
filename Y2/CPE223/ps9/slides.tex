@@ -1,0 +1,256 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage{array}
+\usepackage{amsmath}
+\usepackage{xcolor}
+
+\InputIfFileExists{report-header.tex}{}{
+    \newcommand{\TeamName}{Team name here}
+    \newcommand{\MemberOne}{Member 1 name here}
+    \newcommand{\MemberOneCode}{Member 1 code here}
+    \newcommand{\MemberTwo}{Member 2 name here}
+    \newcommand{\MemberTwoCode}{Member 2 code here}
+    \newcommand{\MemberThree}{Member 3 name here}
+    \newcommand{\MemberThreeCode}{Member 3 code here}
+    \newcommand{\MemberFour}{Member 4 name here}
+    \newcommand{\MemberFourCode}{Member 4 code here}
+}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{frametitle}[default][center]
+\setbeamertemplate{itemize item}{\raise0.15em\hbox{\tiny$\bullet$}}
+
+\definecolor{hitgreen}{RGB}{34,139,34}
+\definecolor{missred}{RGB}{178,34,34}
+\definecolor{currentyellow}{RGB}{255,236,153}
+\definecolor{slotgray}{RGB}{245,245,245}
+\newcommand{\slotbox}[1]{%
+  \fcolorbox{black!40}{slotgray}{\parbox[c][0.7cm][c]{0.9cm}{\centering \strut #1}}%
+}
+
+\newcommand{\accessbox}[4]{%
+\begin{beamercolorbox}[wd=\textwidth,rounded=true,sep=0.35cm]{block body}
+\textbf{Step #1} \hfill Access: \texttt{#2} \hfill Address: \texttt{#3} \hfill #4
+\end{beamercolorbox}
+}
+
+\newcommand{\hitbadge}{\textcolor{hitgreen}{\textbf{Hit}}}
+\newcommand{\missbadge}{\textcolor{missred}{\textbf{Miss}}}
+
+\newcommand{\cachelegend}{%
+\vspace{0.1cm}
+{\scriptsize Cache positions are shown from \textbf{MRU} on the left to \textbf{LRU} on the right.}
+}
+
+\newcommand{\summaryline}[1]{%
+\vspace{0.45cm}
+\begin{center}
+\small #1
+\end{center}
+}
+
+\newcommand{\passheader}[2]{\alt<#1>{\textcolor{missred}{\textbf{#2}}}{\alt<#1->{\textbf{#2}}{}}}
+\newcommand{\passcell}[2]{\alt<#1>{\textcolor{missred}{#2}}{\alt<#1->{#2}{}}}
+
+\newcommand{\facacherow}[8]{%
+\begin{tabular}{c c c c c c c c}
+\slotbox{#1} & \slotbox{#2} & \slotbox{#3} & \slotbox{#4} & \slotbox{#5} & \slotbox{#6} & \slotbox{#7} & \slotbox{#8}
+\end{tabular}
+}
+
+\newcommand{\setcacherows}[8]{%
+\begin{tabular}{r c c c c}
+\textbf{Set 0} & \slotbox{#1} & \slotbox{#2} & \slotbox{#3} & \slotbox{#4} \\
+\textbf{Set 1} & \slotbox{#5} & \slotbox{#6} & \slotbox{#7} & \slotbox{#8}
+\end{tabular}
+}
+
+\title{Problem Session 9: Replacement Algorithm}
+\subtitle{LRU Cache Animation Slides}
+\author{Team: \TeamName}
+\date{CPE223 Computer Architecture}
+
+\begin{document}
+
+\begin{frame}{Problem Setup}
+\begin{itemize}
+    \item Cache size: 8 blocks, 1 word per block, replacement policy = LRU.
+    \item Address width: 16 bits.
+    \item Array $A(4,10)$ is stored in column-major order.
+    \item Word address of $A(i,j)$ is $i + 4j$.
+    \item Access sequence for the first row:
+\end{itemize}
+
+\[
+0,4,8,12,16,20,24,28,32,36,36,32,28,24,20,16,12,8,4,0
+\]
+
+\begin{block}{Mappings Used}
+\begin{itemize}
+    \item Fully associative: 8 lines in one global LRU group.
+    \item Set associative from assignment: tag = 15, set = 1, word = 0, so 2 sets and 4 lines per set.
+    \item Because all accessed addresses are even, every set-associative access goes to Set 0.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[t]{Fully Associative Mapping: First Loop}
+\centering
+\tiny
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{|c|*{10}{c|}}
+\hline
+\multicolumn{11}{|c|}{Content of data cache after pass} \\
+\hline
+Block position & \passheader{1}{$j=0$} & \passheader{2}{$j=1$} & \passheader{3}{$j=2$} & \passheader{4}{$j=3$} & \passheader{5}{$j=4$} & \passheader{6}{$j=5$} & \passheader{7}{$j=6$} & \passheader{8}{$j=7$} & \passheader{9}{$j=8$} & \passheader{10}{$j=9$} \\
+\hline
+0 & \passcell{1}{A(0,0)} & \passcell{2}{A(0,1)} & \passcell{3}{A(0,2)} & \passcell{4}{A(0,3)} & \passcell{5}{A(0,4)} & \passcell{6}{A(0,5)} & \passcell{7}{A(0,6)} & \passcell{8}{A(0,7)} & \passcell{9}{A(0,8)} & \passcell{10}{A(0,9)} \\
+\hline
+1 &  & \passcell{2}{A(0,0)} & \passcell{3}{A(0,1)} & \passcell{4}{A(0,2)} & \passcell{5}{A(0,3)} & \passcell{6}{A(0,4)} & \passcell{7}{A(0,5)} & \passcell{8}{A(0,6)} & \passcell{9}{A(0,7)} & \passcell{10}{A(0,8)} \\
+\hline
+2 &  &  & \passcell{3}{A(0,0)} & \passcell{4}{A(0,1)} & \passcell{5}{A(0,2)} & \passcell{6}{A(0,3)} & \passcell{7}{A(0,4)} & \passcell{8}{A(0,5)} & \passcell{9}{A(0,6)} & \passcell{10}{A(0,7)} \\
+\hline
+3 &  &  &  & \passcell{4}{A(0,0)} & \passcell{5}{A(0,1)} & \passcell{6}{A(0,2)} & \passcell{7}{A(0,3)} & \passcell{8}{A(0,4)} & \passcell{9}{A(0,5)} & \passcell{10}{A(0,6)} \\
+\hline
+4 &  &  &  &  & \passcell{5}{A(0,0)} & \passcell{6}{A(0,1)} & \passcell{7}{A(0,2)} & \passcell{8}{A(0,3)} & \passcell{9}{A(0,4)} & \passcell{10}{A(0,5)} \\
+\hline
+5 &  &  &  &  &  & \passcell{6}{A(0,0)} & \passcell{7}{A(0,1)} & \passcell{8}{A(0,2)} & \passcell{9}{A(0,3)} & \passcell{10}{A(0,4)} \\
+\hline
+6 &  &  &  &  &  &  & \passcell{7}{A(0,0)} & \passcell{8}{A(0,1)} & \passcell{9}{A(0,2)} & \passcell{10}{A(0,3)} \\
+\hline
+7 &  &  &  &  &  &  &  & \passcell{8}{A(0,0)} & \passcell{9}{A(0,1)} & \passcell{10}{A(0,2)} \\
+\hline
+\end{tabular}
+
+\summaryline{Rows show cache positions from MRU at 0 to LRU at 7.}
+\end{frame}
+
+\begin{frame}[t]{Fully Associative Mapping: Second Loop}
+\centering
+\tiny
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{|c|*{10}{c|}}
+\hline
+\multicolumn{11}{|c|}{Content of data cache after pass} \\
+\hline
+Block position & \passheader{1}{$i=9$} & \passheader{2}{$i=8$} & \passheader{3}{$i=7$} & \passheader{4}{$i=6$} & \passheader{5}{$i=5$} & \passheader{6}{$i=4$} & \passheader{7}{$i=3$} & \passheader{8}{$i=2$} & \passheader{9}{$i=1$} & \passheader{10}{$i=0$} \\
+\hline
+0 & \passcell{1}{A(0,9)} & \passcell{2}{A(0,8)} & \passcell{3}{A(0,7)} & \passcell{4}{A(0,6)} & \passcell{5}{A(0,5)} & \passcell{6}{A(0,4)} & \passcell{7}{A(0,3)} & \passcell{8}{A(0,2)} & \passcell{9}{A(0,1)} & \passcell{10}{A(0,0)} \\
+\hline
+1 & \passcell{1}{A(0,8)} & \passcell{2}{A(0,9)} & \passcell{3}{A(0,8)} & \passcell{4}{A(0,7)} & \passcell{5}{A(0,6)} & \passcell{6}{A(0,5)} & \passcell{7}{A(0,4)} & \passcell{8}{A(0,3)} & \passcell{9}{A(0,2)} & \passcell{10}{A(0,1)} \\
+\hline
+2 & \passcell{1}{A(0,7)} & \passcell{2}{A(0,7)} & \passcell{3}{A(0,9)} & \passcell{4}{A(0,8)} & \passcell{5}{A(0,7)} & \passcell{6}{A(0,6)} & \passcell{7}{A(0,5)} & \passcell{8}{A(0,4)} & \passcell{9}{A(0,3)} & \passcell{10}{A(0,2)} \\
+\hline
+3 & \passcell{1}{A(0,6)} & \passcell{2}{A(0,6)} & \passcell{3}{A(0,6)} & \passcell{4}{A(0,9)} & \passcell{5}{A(0,8)} & \passcell{6}{A(0,7)} & \passcell{7}{A(0,6)} & \passcell{8}{A(0,5)} & \passcell{9}{A(0,4)} & \passcell{10}{A(0,3)} \\
+\hline
+4 & \passcell{1}{A(0,5)} & \passcell{2}{A(0,5)} & \passcell{3}{A(0,5)} & \passcell{4}{A(0,5)} & \passcell{5}{A(0,9)} & \passcell{6}{A(0,8)} & \passcell{7}{A(0,7)} & \passcell{8}{A(0,6)} & \passcell{9}{A(0,5)} & \passcell{10}{A(0,4)} \\
+\hline
+5 & \passcell{1}{A(0,4)} & \passcell{2}{A(0,4)} & \passcell{3}{A(0,4)} & \passcell{4}{A(0,4)} & \passcell{5}{A(0,4)} & \passcell{6}{A(0,9)} & \passcell{7}{A(0,8)} & \passcell{8}{A(0,7)} & \passcell{9}{A(0,6)} & \passcell{10}{A(0,5)} \\
+\hline
+6 & \passcell{1}{A(0,3)} & \passcell{2}{A(0,3)} & \passcell{3}{A(0,3)} & \passcell{4}{A(0,3)} & \passcell{5}{A(0,3)} & \passcell{6}{A(0,3)} & \passcell{7}{A(0,9)} & \passcell{8}{A(0,8)} & \passcell{9}{A(0,7)} & \passcell{10}{A(0,6)} \\
+\hline
+7 & \passcell{1}{A(0,2)} & \passcell{2}{A(0,2)} & \passcell{3}{A(0,2)} & \passcell{4}{A(0,2)} & \passcell{5}{A(0,2)} & \passcell{6}{A(0,2)} & \passcell{7}{A(0,2)} & \passcell{8}{A(0,9)} & \passcell{9}{A(0,8)} & \passcell{10}{A(0,7)} \\
+\hline
+\end{tabular}
+
+\summaryline{Fully associative mapping: \textbf{8 hits}, \textbf{12 misses}.}
+\end{frame}
+
+\begin{frame}[t]{Set Associative Mapping: First Loop}
+\centering
+\tiny
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{|c|*{10}{c|}}
+\hline
+\multicolumn{11}{|c|}{Content of data cache after pass} \\
+\hline
+Block position & \passheader{1}{$j=0$} & \passheader{2}{$j=1$} & \passheader{3}{$j=2$} & \passheader{4}{$j=3$} & \passheader{5}{$j=4$} & \passheader{6}{$j=5$} & \passheader{7}{$j=6$} & \passheader{8}{$j=7$} & \passheader{9}{$j=8$} & \passheader{10}{$j=9$} \\
+\hline
+0 & \passcell{1}{A(0,0)} & \passcell{2}{A(0,1)} & \passcell{3}{A(0,2)} & \passcell{4}{A(0,3)} & \passcell{5}{A(0,4)} & \passcell{6}{A(0,5)} & \passcell{7}{A(0,6)} & \passcell{8}{A(0,7)} & \passcell{9}{A(0,8)} & \passcell{10}{A(0,9)} \\
+\hline
+1 &  & \passcell{2}{A(0,0)} & \passcell{3}{A(0,1)} & \passcell{4}{A(0,2)} & \passcell{5}{A(0,3)} & \passcell{6}{A(0,4)} & \passcell{7}{A(0,5)} & \passcell{8}{A(0,6)} & \passcell{9}{A(0,7)} & \passcell{10}{A(0,8)} \\
+\hline
+2 &  &  & \passcell{3}{A(0,0)} & \passcell{4}{A(0,1)} & \passcell{5}{A(0,2)} & \passcell{6}{A(0,3)} & \passcell{7}{A(0,4)} & \passcell{8}{A(0,5)} & \passcell{9}{A(0,6)} & \passcell{10}{A(0,7)} \\
+\hline
+3 &  &  &  & \passcell{4}{A(0,0)} & \passcell{5}{A(0,1)} & \passcell{6}{A(0,2)} & \passcell{7}{A(0,3)} & \passcell{8}{A(0,4)} & \passcell{9}{A(0,5)} & \passcell{10}{A(0,6)} \\
+\hline
+4 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+5 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+6 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+7 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+\end{tabular}
+
+\summaryline{All references map to Set 0. Rows 4--7 stay empty throughout.}
+\end{frame}
+
+\begin{frame}[t]{Set Associative Mapping: Second Loop}
+\centering
+\tiny
+\setlength{\tabcolsep}{2.6pt}
+\begin{tabular}{|c|*{10}{c|}}
+\hline
+\multicolumn{11}{|c|}{Content of data cache after pass} \\
+\hline
+Block position & \passheader{1}{$i=9$} & \passheader{2}{$i=8$} & \passheader{3}{$i=7$} & \passheader{4}{$i=6$} & \passheader{5}{$i=5$} & \passheader{6}{$i=4$} & \passheader{7}{$i=3$} & \passheader{8}{$i=2$} & \passheader{9}{$i=1$} & \passheader{10}{$i=0$} \\
+\hline
+0 & \passcell{1}{A(0,9)} & \passcell{2}{A(0,8)} & \passcell{3}{A(0,7)} & \passcell{4}{A(0,6)} & \passcell{5}{A(0,5)} & \passcell{6}{A(0,4)} & \passcell{7}{A(0,3)} & \passcell{8}{A(0,2)} & \passcell{9}{A(0,1)} & \passcell{10}{A(0,0)} \\
+\hline
+1 & \passcell{1}{A(0,8)} & \passcell{2}{A(0,9)} & \passcell{3}{A(0,8)} & \passcell{4}{A(0,7)} & \passcell{5}{A(0,6)} & \passcell{6}{A(0,5)} & \passcell{7}{A(0,4)} & \passcell{8}{A(0,3)} & \passcell{9}{A(0,2)} & \passcell{10}{A(0,1)} \\
+\hline
+2 & \passcell{1}{A(0,7)} & \passcell{2}{A(0,7)} & \passcell{3}{A(0,9)} & \passcell{4}{A(0,8)} & \passcell{5}{A(0,7)} & \passcell{6}{A(0,6)} & \passcell{7}{A(0,5)} & \passcell{8}{A(0,4)} & \passcell{9}{A(0,3)} & \passcell{10}{A(0,2)} \\
+\hline
+3 & \passcell{1}{A(0,6)} & \passcell{2}{A(0,6)} & \passcell{3}{A(0,6)} & \passcell{4}{A(0,9)} & \passcell{5}{A(0,8)} & \passcell{6}{A(0,7)} & \passcell{7}{A(0,6)} & \passcell{8}{A(0,5)} & \passcell{9}{A(0,4)} & \passcell{10}{A(0,3)} \\
+\hline
+4 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+5 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+6 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+7 &  &  &  &  &  &  &  &  &  &  \\
+\hline
+\end{tabular}
+
+\summaryline{Set associative mapping: \textbf{4 hits}, \textbf{16 misses}.}
+\end{frame}
+
+\begin{frame}{Comparison and Conclusion}
+\begin{columns}[T]
+\column{0.56\textwidth}
+\begin{block}{Results}
+\begin{tabular}{lcc}
+\textbf{Mapping} & \textbf{Hits} & \textbf{Misses} \\
+Fully associative & 8 & 12 \\
+Set associative & 4 & 16
+\end{tabular}
+\end{block}
+
+\begin{block}{Why the difference?}
+\begin{itemize}
+    \item Fully associative mapping can use all 8 lines.
+    \item Set associative mapping from the assignment uses only Set 0 for this address pattern.
+    \item Effective capacity becomes 4 useful lines instead of 8.
+\end{itemize}
+\end{block}
+
+\column{0.44\textwidth}
+\begin{block}{Hit Rates}
+\begin{itemize}
+    \item Fully associative: 40\%
+    \item Set associative: 20\%
+\end{itemize}
+\end{block}
+
+\begin{alertblock}{Conclusion}
+For this program, fully associative LRU performs better because it avoids the strong set conflict caused by all-even addresses.
+\end{alertblock}
+\end{columns}
+\end{frame}
+
+\end{document}
