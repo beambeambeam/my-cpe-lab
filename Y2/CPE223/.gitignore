@@ -5,3 +5,5 @@
 *.synctex.gz
 *.pdf
 *-header.tex
+
+*/output

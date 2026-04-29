@@ -1,0 +1,14 @@
+[project]
+name = "ps9-cache-animations"
+version = "0.1.0"
+description = "Generate PS9 cache animation MP4 files"
+requires-python = ">=3.11"
+dependencies = [
+  "imageio>=2.37.0",
+  "imageio-ffmpeg>=0.6.0",
+  "matplotlib>=3.10.0",
+  "numpy>=2.3.0",
+]
+
+[tool.uv]
+package = false
