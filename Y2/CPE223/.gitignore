@@ -7,3 +7,8 @@
 *-header.tex
 
 */output
+
+# Python / uv
+__pycache__/
+*.py[cod]
+.venv/
