@@ -1,0 +1,47 @@
+commit-msg:
+  commands:
+    commit-style:
+      run: |
+        commit_msg_file=""
+        for candidate in "{1}" "{0}"; do
+          if [ -f "$candidate" ]; then
+            commit_msg_file="$candidate"
+            break
+          fi
+        done
+
+        if [ -z "$commit_msg_file" ]; then
+          echo "Commit message file was not provided."
+          exit 1
+        fi
+
+        subject="$(sed -n '1p' "$commit_msg_file")"
+
+        case "$subject" in
+          Merge\ *|Revert\ *|fixup!\ *|squash!\ *)
+            exit 0
+            ;;
+        esac
+
+        if [ -z "$subject" ]; then
+          echo "Commit subject cannot be empty."
+          exit 1
+        fi
+
+        if printf '%s\n' "$subject" | grep -Eq '^[a-z]+(\(.+\))?!?: '; then
+          echo "Use the repo style, not Conventional Commit prefixes."
+          echo "Example: Add lab 8 tuning materials"
+          exit 1
+        fi
+
+        if ! printf '%s\n' "$subject" | grep -Eq '^(Add|Remove|Update|Refactor|Fix|Initialize|Implement|Move|Clean|Validate|Simplify|Rename|Reformat|Match|Improve|Ignore|Finalize|Extract|Draft|Compile) .+'; then
+          echo "Commit subject must match the repo style:"
+          echo "  <Imperative Verb> <description>"
+          echo "Example: Add lab 8 tuning materials"
+          exit 1
+        fi
+
+        if printf '%s\n' "$subject" | grep -Eq '\.$'; then
+          echo "Commit subject should not end with a period."
+          exit 1
+        fi
