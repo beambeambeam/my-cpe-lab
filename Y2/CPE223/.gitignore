@@ -8,6 +8,9 @@
 
 */output
 
+# Local compiled binaries
+ps03/quicksort
+
 # Python / uv
 __pycache__/
 *.py[cod]

@@ -1,0 +1,64 @@
+# Ignore compiled binaries while keeping source files and directories
+*
+!*.*
+!*/
+!Makefile
+!makefile
+
+# Temporary files
+tempCodeRunnerFile*
+*.tmp
+*~
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# C build artifacts
+*.d
+*.o
+*.ko
+*.obj
+*.elf
+*.ilk
+*.map
+*.exp
+*.gch
+*.pch
+*.lib
+*.exe
+*.out
+*.app
+*.a
+*.la
+*.lo
+*.so
+*.so.*
+*.dylib
+*.dll
+*.i*86
+*.x86_64
+*.hex
+*.dSYM/
+*.su
+*.idb
+*.pdb
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.iml

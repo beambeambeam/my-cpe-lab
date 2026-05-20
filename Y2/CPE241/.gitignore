@@ -17,5 +17,8 @@
 # PDF output (uncomment if you don't want to track PDFs)
 *.pdf
 
+# Local environment files
+.env
+
 # VS Code settings (optional - you may want to commit this)
 # .vscode/

@@ -27,6 +27,9 @@ ENV/
 *.html
 !*.ipynb
 
+# Generated lab files
+sessions/02_data_types/lab/json_file
+
 # Data (optional - uncomment if you don't want to track large data files)
 # *.csv
 # *.json
