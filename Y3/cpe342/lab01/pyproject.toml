@@ -1,0 +1,9 @@
+[project]
+name = "lab01"
+version = "0.1.0"
+description = "CPE 342 Lab 01"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.3.0",
+]

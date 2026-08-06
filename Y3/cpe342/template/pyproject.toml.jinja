@@ -1,0 +1,9 @@
+[project]
+name = "{{ project_name }}"
+version = "0.1.0"
+description = "CPE 342 Lab {{ '%02d' | format(lab_number) }}"
+readme = "README.md"
+requires-python = ">={{ python_version }}"
+dependencies = [
+{% for dependency in dependencies %}    "{{ dependency }}",
+{% endfor %}]

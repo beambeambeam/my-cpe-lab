@@ -1,0 +1,29 @@
+_min_copier_version: "9.0"
+
+lab_number:
+  type: int
+  help: Lab number
+  validator: >-
+    {% if lab_number < 1 %}Lab number must be positive{% endif %}
+
+project_name:
+  type: str
+  default: "lab{{ '%02d' | format(lab_number) }}"
+  when: false
+
+python_version:
+  type: str
+  help: Python version
+  default: "3.12"
+
+dependencies:
+  type: yaml
+  help: Runtime dependencies
+  default:
+    - ipykernel>=7.3.0
+
+_message_after_copy: |
+  Generated {{ project_name }}.
+
+  Next step:
+    uv sync

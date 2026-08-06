@@ -1,0 +1,6 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_src_path: ../template
+dependencies:
+- ipykernel>=7.3.0
+lab_number: 1
+python_version: '3.12'
