@@ -1,2 +1,29 @@
 .DS_Store
 tempCodeRunnerFile.*
+
+# LaTeX build output
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.pdf
+*.run.xml
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+
+# Generated auxiliary directories/files from minted and similar tools
+_minted-*
+*.pytxcode
