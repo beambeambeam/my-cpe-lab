@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+
+\title{Why Use Half Mean Squared Error?}
+\author{CPE 342 Machine Learning}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Definition}
+
+Let the residual for observation $i$ be
+\[
+r_i = \hat{y}_i - y_i.
+\]
+The standard mean squared error (MSE) is
+\[
+J(c_0,c_1,c_2) = \frac{1}{n}\sum_{i=1}^{n} r_i^2.
+\]
+In this assignment, we use the half-MSE loss
+\[
+L(c_0,c_1,c_2) = \frac{1}{2n}\sum_{i=1}^{n} r_i^2
+                 = \frac{1}{2}J(c_0,c_1,c_2).
+\]
+
+The factor $1/2$ does not change the fitted model. It only rescales the loss
+and its gradient by a constant.
+
+\section{Why the factor $1/2$ is useful}
+
+The derivative of a squared residual contains a factor of $2$:
+\[
+\frac{\partial}{\partial \theta}r_i^2
+= 2r_i\frac{\partial r_i}{\partial \theta}.
+\]
+For the half-MSE loss, the factor $2$ cancels the factor $1/2$:
+\[
+\frac{\partial L}{\partial \theta}
+= \frac{1}{n}\sum_{i=1}^{n}
+r_i\frac{\partial r_i}{\partial \theta}.
+\]
+This makes the gradient equations shorter and reduces the chance of carrying
+an unnecessary factor of $2$ through every update rule.
+
+\section{Gradients for the assignment model}
+
+The model is
+\[
+\hat{y}_i = c_0 + c_1 e^{c_2x_i},
+\]
+so
+\[
+r_i = c_0 + c_1 e^{c_2x_i} - y_i.
+\]
+The half-MSE gradients are therefore
+\begin{align*}
+\frac{\partial L}{\partial c_0}
+&= \frac{1}{n}\sum_{i=1}^{n}r_i, \\
+\frac{\partial L}{\partial c_1}
+&= \frac{1}{n}\sum_{i=1}^{n}r_i e^{c_2x_i}, \\
+\frac{\partial L}{\partial c_2}
+&= \frac{1}{n}\sum_{i=1}^{n}r_i c_1x_i e^{c_2x_i}.
+\end{align*}
+
+These gradients are the ones used by the notebook's batch gradient descent.
+
+\section{Same optimum as standard MSE}
+
+Because $L = J/2$ and $1/2$ is positive,
+\[
+\operatorname*{arg\,min}_{c_0,c_1,c_2} L
+= \operatorname*{arg\,min}_{c_0,c_1,c_2} J.
+\]
+Therefore, both losses produce the same optimal coefficients, predictions,
+residuals, and goodness-of-fit measures when optimized correctly.
+
+The numerical loss values differ by a factor of two. For the notebook result,
+the final half-MSE is approximately
+\[
+L = 0.0003777068,
+\]
+while the corresponding standard MSE is
+\[
+J = 2L = 0.0007554135.
+\]
+The normalization must be stated when reporting the loss value.
+
+\section{Effect on the learning rate}
+
+The gradients satisfy
+\[
+\nabla L = \frac{1}{2}\nabla J.
+\]
+Consequently, a half-MSE update with learning rate $\eta_L$ is
+\[
+\boldsymbol{c}^{(t+1)}
+= \boldsymbol{c}^{(t)} - \eta_L\nabla L
+= \boldsymbol{c}^{(t)} - \frac{\eta_L}{2}\nabla J.
+\]
+To obtain the same step as standard MSE gradient descent with learning rate
+$\eta_J$, choose
+\[
+\eta_L = 2\eta_J.
+\]
+In the notebook, $\eta_L=0.2$ is used with half-MSE. The equivalent standard
+MSE learning rate would be $\eta_J=0.1$.
+
+\section{Conclusion}
+
+Half-MSE is used for algebraic convenience. It removes the factor of $2$ from
+the gradients without changing the optimization target or the final fitted
+model. The only differences are the reported loss scale and the learning-rate
+scale needed to produce equivalent gradient-descent steps.
+
+\end{document}
