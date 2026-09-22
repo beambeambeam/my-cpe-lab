@@ -24,6 +24,9 @@ tempCodeRunnerFile.*
 *.vrb
 *.xdv
 
+# Local checkout kept outside this repository
+/Y3/cpe334/flame-toktickit/
+
 # Generated auxiliary directories/files from minted and similar tools
 _minted-*
 *.pytxcode
